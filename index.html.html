@@ -1,0 +1,1592 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a2b">
+  <title>Raporty i opisy spraw LSPD</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #0b1220;
+      --surface: #111c2e;
+      --surface-raised: #17243a;
+      --border: #293951;
+      --text: #edf2f8;
+      --muted: #9aabc1;
+      --gold: #e3b95b;
+      --gold-dark: #bd9440;
+      --green: #8ed0a3;
+      --red: #e78c8c;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 12% 0%, rgb(35 58 91 / 34%), transparent 38rem),
+        var(--background);
+      color: var(--text);
+    }
+
+    button, input, textarea { font: inherit; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 17px clamp(20px, 5vw, 72px);
+      border-bottom: 1px solid rgb(154 171 193 / 13%);
+      background: rgb(11 18 32 / 74%);
+    }
+
+    .brand { display: flex; align-items: center; gap: 13px; }
+
+    .brand-mark {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border: 1px solid rgb(227 185 91 / 48%);
+      border-radius: 12px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+
+    .brand-name { font-size: 14px; font-weight: 750; letter-spacing: .12em; }
+    .brand-subtitle { margin-top: 3px; color: var(--muted); font-size: 11px; }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .status::before {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      content: "";
+    }
+
+    main { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 48px 0 72px; }
+
+    .page-heading { margin-bottom: 30px; }
+    .eyebrow { color: var(--gold); font-size: 11px; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 10px 0 8px; font-size: clamp(28px, 5vw, 40px); letter-spacing: -.045em; }
+    .page-heading p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    .layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(310px, .8fr); gap: 22px; align-items: start; }
+
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: linear-gradient(160deg, rgb(23 36 58 / 92%), rgb(17 28 46 / 98%) 44%);
+      box-shadow: 0 18px 45px rgb(0 0 0 / 16%);
+    }
+
+    .card-header { padding: 22px 24px 18px; border-bottom: 1px solid var(--border); }
+    .card-header h2 { margin: 0; font-size: 16px; }
+    .card-header p { margin: 6px 0 0; color: var(--muted); font-size: 12px; }
+    form { padding: 22px 24px 24px; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 15px;
+      color: #dbe4ef;
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .section-title::before { width: 3px; height: 15px; border-radius: 4px; background: var(--gold); content: ""; }
+    .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; margin-bottom: 24px; }
+    .field { min-width: 0; }
+    .field.full { grid-column: 1 / -1; }
+    label { display: block; margin-bottom: 7px; color: #c5d0df; font-size: 12px; font-weight: 600; }
+    .optional { color: #8394aa; font-weight: 400; }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #34465f;
+      border-radius: 9px;
+      outline: none;
+      background: #0f1929;
+      color: var(--text);
+      transition: border-color .15s, box-shadow .15s;
+    }
+
+    input, select { min-height: 42px; padding: 0 12px; }
+    textarea { min-height: 102px; padding: 11px 12px; resize: vertical; line-height: 1.55; }
+    input::placeholder, textarea::placeholder { color: #6f8097; }
+    input:focus, textarea:focus { border-color: var(--gold-dark); box-shadow: 0 0 0 3px rgb(227 185 91 / 12%); }
+
+    .radio-row { display: flex; gap: 10px; }
+    .radio-option { position: relative; flex: 1; }
+    .radio-option input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    .radio-option span {
+      display: flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #34465f;
+      border-radius: 9px;
+      background: #0f1929;
+      color: #c5d0df;
+      cursor: pointer;
+      font-size: 13px;
+      transition: .15s;
+    }
+
+    .radio-option input:checked + span { border-color: var(--gold-dark); background: rgb(227 185 91 / 10%); color: var(--gold); }
+    .radio-option input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .lawyer-field { margin-top: 13px; }
+    .hidden { display: none; }
+
+    .form-actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 3px; }
+    .button {
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 15px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      transition: transform .15s, background .15s, border-color .15s;
+    }
+
+    .button:hover { transform: translateY(-1px); }
+    .button-primary { background: var(--gold); color: #17191d; }
+    .button-primary:hover { background: #edc96f; }
+    .button-secondary { border-color: #3b4c64; background: #17243a; color: var(--text); }
+    .button-secondary:hover { border-color: #60718a; }
+    .button-quiet { background: transparent; color: var(--muted); }
+    .button-quiet:hover { background: rgb(255 255 255 / 5%); color: var(--text); }
+
+    .preview-card { position: sticky; top: 20px; }
+    .preview-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .preview-toolbar h2 { display: flex; align-items: center; gap: 8px; }
+    .preview-toolbar h2::before { color: var(--gold); content: "◈"; font-size: 15px; }
+    .preview-paper { min-height: 220px; padding: 22px 24px 24px; }
+    .preview-placeholder { color: #8596ac; font-size: 13px; line-height: 1.7; }
+    .report { color: #d8e1ec; font-size: 12px; line-height: 1.75; overflow-wrap: anywhere; }
+    .report-title { margin-bottom: 16px; color: var(--gold); font-size: 14px; font-weight: 800; letter-spacing: .09em; text-align: center; }
+    .report-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 14px; margin-bottom: 18px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+    .report-meta b { color: #91a3bb; font-size: 10px; font-weight: 650; text-transform: uppercase; }
+    .report-meta span { display: block; color: var(--text); }
+    .report-block { margin-top: 14px; }
+    .report-block h3 { margin: 0 0 4px; color: #e7c46e; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+    .report-block p { margin: 0; white-space: pre-wrap; }
+    .privacy-note { display: flex; gap: 8px; margin: 0; padding: 0 24px 19px; color: #8192a8; font-size: 11px; line-height: 1.5; }
+    .privacy-note::before { color: var(--green); content: "●"; }
+    .toast { min-height: 18px; margin: 10px 0 0; color: var(--green); font-size: 12px; }
+    .workspace-nav { display: flex; gap: 8px; margin: 0 0 30px; padding: 5px; border: 1px solid var(--border); border-radius: 12px; background: #0d1726; }
+    .workspace-tab { min-height: 40px; flex: 1; border: 0; border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 700; }
+    .workspace-tab[aria-selected="true"] { background: var(--surface-raised); color: var(--gold); box-shadow: inset 0 0 0 1px var(--border); }
+    .workspace[hidden] { display: none; }
+    .case-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr); gap: 22px; align-items: start; }
+    .case-preview { position: sticky; top: 20px; }
+    .case-items { display: grid; gap: 8px; }
+    .case-item-row { display: flex; gap: 8px; align-items: center; }
+    .case-item-row input { flex: 1; }
+    .icon-button { display: grid; width: 40px; height: 40px; flex: 0 0 auto; place-items: center; border: 1px solid #3b4c64; border-radius: 9px; background: #17243a; color: #d8e1ec; cursor: pointer; }
+    .icon-button:hover { border-color: var(--gold-dark); color: var(--gold); }
+    .list-empty { margin: 0; padding: 14px; border: 1px dashed #34465f; border-radius: 9px; color: #8192a8; font-size: 12px; text-align: center; }
+    .inline-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .inline-heading label { margin: 0; }
+    .small-button { min-height: 32px; padding: 0 10px; font-size: 11px; }
+    .case-save-list { display: grid; gap: 9px; padding: 0 20px 20px; }
+    .saved-case { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: #0f1929; }
+    .saved-case-title { font-size: 12px; font-weight: 700; }
+    .saved-case-meta { margin-top: 4px; color: var(--muted); font-size: 11px; }
+    .saved-case-actions { display: flex; gap: 6px; }
+    .saved-case-actions .button { min-height: 32px; padding: 0 9px; font-size: 11px; }
+    .search-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr); gap: 22px; align-items: start; }
+    .search-preview { position: static; }
+    .notice { margin: 0 0 20px; padding: 13px 15px; border: 1px solid rgb(227 185 91 / 35%); border-radius: 10px; background: rgb(227 185 91 / 8%); color: #dfc67e; font-size: 12px; line-height: 1.55; }
+    .upload-zone { display: grid; min-height: 118px; place-content: center; gap: 7px; padding: 18px; border: 1px dashed #536580; border-radius: 11px; background: #0f1929; text-align: center; }
+    .upload-zone strong { color: #d8e1ec; font-size: 13px; }
+    .upload-zone span { color: var(--muted); font-size: 11px; }
+    .upload-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .upload-actions input[type="file"] { display: none; }
+    .screenshot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 12px; }
+    .screenshot-card { overflow: hidden; border: 1px solid var(--border); border-radius: 10px; background: #0f1929; }
+    .screenshot-card img { display: block; width: 100%; height: 100px; object-fit: cover; background: #080d15; }
+    .screenshot-footer { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 7px; }
+    .screenshot-name { overflow: hidden; color: var(--muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .screenshot-footer .icon-button { width: 27px; height: 27px; }
+    .search-screenshots { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 16px; }
+    .search-screenshots figure { margin: 0; }
+    .search-screenshots img { display: block; width: 100%; max-height: 260px; border: 1px solid var(--border); border-radius: 8px; object-fit: contain; background: #080d15; }
+    .search-screenshots figcaption { margin-top: 5px; color: var(--muted); font-size: 10px; }
+    .ai-pending { margin: 0 0 15px; padding: 10px 12px; border-radius: 8px; background: rgb(154 171 193 / 9%); color: #adbdcf; font-size: 11px; line-height: 1.5; }
+    .search-saved { display: grid; gap: 9px; padding: 0 20px 20px; }
+    .scan-settings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .scan-results { display: grid; gap: 9px; margin-top: 12px; }
+    .scan-result { display: grid; grid-template-columns: minmax(0, 1fr) minmax(125px, .9fr); gap: 10px; align-items: center; padding: 10px; border: 1px solid var(--border); border-radius: 9px; background: #0f1929; }
+    .scan-result-caption { color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .scan-result select { min-width: 0; font-size: 11px; }
+    .scan-progress { min-height: 18px; margin: 9px 0 0; color: var(--gold); font-size: 11px; }
+    .scan-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .confidence-low { color: var(--red); }
+    #search-item-candidates { min-height: 140px; font-size: 11px; }
+
+    @media (max-width: 800px) {
+      .layout { grid-template-columns: 1fr; }
+      .preview-card { position: static; }
+      .case-layout { grid-template-columns: 1fr; }
+      .case-preview { position: static; }
+      .search-layout { grid-template-columns: 1fr; }
+      .search-preview { position: static; }
+    }
+
+    @media (max-width: 520px) {
+      .topbar { align-items: flex-start; padding-inline: 18px; }
+      .status { margin-top: 4px; font-size: 0; }
+      .status::before { width: 8px; height: 8px; }
+      main { width: min(100% - 28px, 620px); padding-top: 32px; }
+      form { padding: 19px 17px 20px; }
+      .card-header { padding-inline: 18px; }
+      .field-grid { grid-template-columns: 1fr; gap: 13px; }
+      .field.full { grid-column: auto; }
+      .preview-paper { padding-inline: 18px; }
+      .privacy-note { padding-inline: 18px; }
+      .report-meta { grid-template-columns: 1fr; }
+      .workspace-nav { margin-bottom: 24px; }
+      .workspace-tab { padding: 0 6px; font-size: 11px; }
+      .case-save-list { padding-inline: 17px; }
+      .saved-case { align-items: flex-start; }
+    }
+
+    @media print {
+      :root { color-scheme: light; }
+      body { min-width: 0; background: #fff; color: #111; }
+      .topbar, .workspace-nav, .page-heading, .form-card, .case-form-card, .search-form-card, .preview-toolbar, .privacy-note, .toast, .case-save-list, .search-saved, .notice, .ai-pending, .scan-settings, .scan-results, .scan-actions, .scan-progress { display: none !important; }
+      main { width: 100%; margin: 0; padding: 0; }
+      .workspace:not(.active-workspace) { display: none !important; }
+      .active-workspace { display: block !important; }
+      .layout, .case-layout { display: block; }
+      .search-layout { display: block; }
+      .preview-card { position: static; border: 0; border-radius: 0; background: #fff; box-shadow: none; }
+      .case-preview { position: static; border: 0; border-radius: 0; background: #fff; box-shadow: none; }
+      .search-preview { position: static; border: 0; border-radius: 0; background: #fff; box-shadow: none; }
+      .preview-card .card-header { display: none; }
+      .case-preview .card-header { display: none; }
+      .search-preview .card-header { display: none; }
+      .preview-paper { min-height: 0; padding: 0; }
+      .report { color: #111; font-size: 11pt; }
+      .report-title, .report-block h3 { color: #222; }
+      .report-meta b { color: #444; }
+      .report-meta span { color: #111; }
+      .report-meta { border-color: #aaa; }
+      @page { margin: 20mm; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" aria-label="Los Santos Police Department">
+      <div class="brand-mark" aria-hidden="true">LSPD</div>
+      <div>
+        <div class="brand-name">LOS SANTOS POLICE DEPARTMENT</div>
+        <div class="brand-subtitle">System dokumentacji służbowej</div>
+      </div>
+    </div>
+    <div class="status">Formularz gotowy</div>
+  </header>
+
+  <main>
+    <nav class="workspace-nav" role="tablist" aria-label="Rodzaj dokumentu">
+      <button class="workspace-tab" id="report-tab" type="button" role="tab" aria-selected="true" aria-controls="report-workspace">Raport z interwencji</button>
+      <button class="workspace-tab" id="case-tab" type="button" role="tab" aria-selected="false" aria-controls="case-workspace">Opis sprawy</button>
+      <button class="workspace-tab" id="search-tab" type="button" role="tab" aria-selected="false" aria-controls="search-workspace">Przeszukanie</button>
+    </nav>
+
+    <section class="workspace active-workspace" id="report-workspace" role="tabpanel" aria-labelledby="report-tab">
+      <section class="page-heading">
+        <div class="eyebrow">Dokumentacja służbowa</div>
+        <h1>Raport z interwencji</h1>
+        <p>Rozbudowany raport ze szczegółowym przebiegiem interwencji.</p>
+      </section>
+
+      <div class="layout">
+      <section class="card form-card" aria-labelledby="form-title">
+        <div class="card-header">
+          <h2 id="form-title">Dane raportu</h2>
+          <p>Pola oznaczone jako opcjonalne możesz pozostawić puste.</p>
+        </div>
+        <form id="report-form">
+          <h3 class="section-title">Informacje podstawowe</h3>
+          <div class="field-grid">
+            <div class="field">
+              <label for="report-number">Numer raportu <span class="optional">(opcjonalnie)</span></label>
+              <input id="report-number" name="reportNumber" placeholder="np. LSPD-2025-014">
+            </div>
+            <div class="field">
+              <label for="report-date">Data i godzina</label>
+              <input id="report-date" name="reportDate" type="datetime-local">
+            </div>
+            <div class="field">
+              <label for="officer">Funkcjonariusz sporządzający</label>
+              <input id="officer" name="officer" placeholder="Imię i nazwisko / numer odznaki">
+            </div>
+            <div class="field">
+              <label for="detained">Osoba zatrzymana</label>
+              <input id="detained" name="detained" placeholder="Imię i nazwisko">
+            </div>
+          </div>
+
+          <h3 class="section-title">Przebieg interwencji</h3>
+          <div class="field-grid">
+            <div class="field full">
+              <label for="circumstances">Okoliczności działania</label>
+              <textarea id="circumstances" name="circumstances" placeholder="Opisz, co doprowadziło do podjęcia interwencji i gdzie miało miejsce zdarzenie..."></textarea>
+            </div>
+            <div class="field full">
+              <label for="actions">Podjęte działania</label>
+              <textarea id="actions" name="actions" placeholder="Opisz przebieg interwencji, wydane polecenia oraz zastosowane środki..."></textarea>
+            </div>
+          </div>
+
+          <h3 class="section-title">Zatrzymany i pomoc prawna</h3>
+          <div class="field-grid">
+            <div class="field">
+              <label>Czy zatrzymany współpracował?</label>
+              <div class="radio-row">
+                <label class="radio-option"><input type="radio" name="cooperation" value="Tak"><span>Tak</span></label>
+                <label class="radio-option"><input type="radio" name="cooperation" value="Nie"><span>Nie</span></label>
+              </div>
+            </div>
+            <div class="field">
+              <label>Czy był obecny adwokat?</label>
+              <div class="radio-row">
+                <label class="radio-option"><input type="radio" name="lawyerPresent" value="Tak"><span>Tak</span></label>
+                <label class="radio-option"><input type="radio" name="lawyerPresent" value="Nie"><span>Nie</span></label>
+              </div>
+              <div class="lawyer-field hidden" id="lawyer-field">
+                <label for="lawyer">Imię i nazwisko adwokata</label>
+                <input id="lawyer" name="lawyer" placeholder="Dane adwokata">
+              </div>
+            </div>
+            <div class="field full">
+              <label for="notes">Dodatkowe informacje <span class="optional">(opcjonalnie)</span></label>
+              <textarea id="notes" name="notes" placeholder="Uwagi, świadkowie, zabezpieczone dowody..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="button button-primary" type="button" id="copy-button">Kopiuj raport</button>
+            <button class="button button-secondary" type="button" id="print-button">Drukuj / zapisz PDF</button>
+            <button class="button button-quiet" type="reset">Wyczyść formularz</button>
+          </div>
+          <p class="toast" id="toast" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <aside class="card preview-card" aria-labelledby="preview-title">
+        <div class="card-header preview-toolbar">
+          <div>
+            <h2 id="preview-title">Podgląd raportu</h2>
+            <p>Treść aktualizuje się podczas wpisywania.</p>
+          </div>
+        </div>
+        <div class="preview-paper" id="preview" aria-live="polite">
+          <p class="preview-placeholder">Wypełnij formularz, aby wygenerować raport.</p>
+        </div>
+        <p class="privacy-note">Dane pozostają w tej przeglądarce i nie są nigdzie wysyłane.</p>
+      </aside>
+      </div>
+    </section>
+
+    <section class="workspace" id="case-workspace" role="tabpanel" aria-labelledby="case-tab" hidden>
+      <section class="page-heading">
+        <div class="eyebrow">Kartoteki i postępowania</div>
+        <h1>Opis sprawy</h1>
+        <p>Krótkie podsumowanie przebiegu sprawy, przestępstw i sugerowanego wymiaru kary.</p>
+      </section>
+
+      <div class="case-layout">
+        <section class="card case-form-card" aria-labelledby="case-form-title">
+          <form id="case-form">
+            <h3 class="section-title" id="case-form-title">Przebieg i kwalifikacja</h3>
+            <div class="field-grid">
+              <div class="field full">
+                <label for="case-description">Opis sprawy</label>
+                <textarea id="case-description" name="caseDescription" required placeholder="Krótko opisz przebieg interwencji, zachowanie obywatela i najważniejsze ustalenia..."></textarea>
+              </div>
+              <div class="field full">
+                <div class="inline-heading">
+                  <label>Przestępstwa</label>
+                  <button class="button button-secondary small-button" type="button" data-add-to="case-crimes">＋ Dodaj</button>
+                </div>
+                <div class="case-items" id="case-crimes" data-placeholder="Nie dodano jeszcze przestępstw"></div>
+              </div>
+              <div class="field">
+                <label for="case-months">Sugerowana kara (miesiące)</label>
+                <input id="case-months" name="caseMonths" type="number" min="0" step="1" value="0">
+              </div>
+              <div class="field">
+                <label for="case-fine">Sugerowana grzywna ($)</label>
+                <input id="case-fine" name="caseFine" type="number" min="0" step="1" value="0">
+              </div>
+              <div class="field full">
+                <label for="case-outcome">Dalsze postępowanie</label>
+                <select id="case-outcome" name="caseOutcome">
+                  <option value="">Nie określono</option>
+                  <option value="Wysłanie do więzienia">Wysłanie do więzienia</option>
+                  <option value="Postępowanie sądowe">Postępowanie sądowe</option>
+                  <option value="Umorzenie sprawy">Umorzenie sprawy</option>
+                  <option value="Zatrzymany">Zatrzymany</option>
+                </select>
+              </div>
+            </div>
+
+            <h3 class="section-title">Powiązane informacje</h3>
+            <div class="field-grid">
+              <div class="field">
+                <div class="inline-heading">
+                  <label>Osoby powiązane</label>
+                  <button class="button button-secondary small-button" type="button" data-add-to="case-people">＋ Dodaj</button>
+                </div>
+                <div class="case-items" id="case-people" data-placeholder="Brak powiązanych osób"></div>
+              </div>
+              <div class="field">
+                <div class="inline-heading">
+                  <label>Pojazdy powiązane</label>
+                  <button class="button button-secondary small-button" type="button" data-add-to="case-vehicles">＋ Dodaj</button>
+                </div>
+                <div class="case-items" id="case-vehicles" data-placeholder="Brak powiązanych pojazdów"></div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="button button-primary" type="button" id="save-case-button">Zapisz opis sprawy</button>
+              <button class="button button-secondary" type="button" id="copy-case-button">Kopiuj opis</button>
+              <button class="button button-quiet" type="reset">Wyczyść formularz</button>
+            </div>
+            <p class="toast" id="case-toast" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <div>
+          <aside class="card case-preview" aria-labelledby="case-preview-title">
+            <div class="card-header preview-toolbar">
+              <div>
+                <h2 id="case-preview-title">Podgląd sprawy</h2>
+                <p>Krótka karta sprawy aktualizowana na bieżąco.</p>
+              </div>
+              <button class="button button-secondary small-button" type="button" id="print-case-button">Drukuj</button>
+            </div>
+            <div class="preview-paper" id="case-preview" aria-live="polite">
+              <p class="preview-placeholder">Wypełnij formularz, aby przygotować opis sprawy.</p>
+            </div>
+            <p class="privacy-note">Dane są przechowywane lokalnie w tej przeglądarce.</p>
+          </aside>
+          <section class="card" style="margin-top: 18px" aria-labelledby="saved-cases-title">
+            <div class="card-header">
+              <h2 id="saved-cases-title">Zapisane opisy spraw</h2>
+              <p>Tylko na tym urządzeniu i w tej przeglądarce.</p>
+            </div>
+            <div class="case-save-list" id="saved-cases">
+              <p class="list-empty">Nie zapisano jeszcze żadnej sprawy.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace" id="search-workspace" role="tabpanel" aria-labelledby="search-tab" hidden>
+      <section class="page-heading">
+        <div class="eyebrow">AIAD · dokumentacja służbowa</div>
+        <h1>Raport z przeszukania</h1>
+        <p>Zarejestruj przebieg przeszukania, znalezione przedmioty i dołącz zrzuty ekranu.</p>
+      </section>
+
+      <div class="search-layout">
+        <section class="card search-form-card" aria-labelledby="search-form-title">
+          <div class="card-header">
+            <h2 id="search-form-title">Dane przeszukania</h2>
+            <p>Dodaj zrzut ekranu, uruchom skanowanie AI i sprawdź rozpoznane przedmioty.</p>
+          </div>
+          <form id="search-form">
+            <h3 class="section-title">Przebieg czynności</h3>
+            <div class="field-grid">
+              <div class="field">
+                <label for="search-officer">Funkcjonariusz przeszukujący</label>
+                <input id="search-officer" name="searchOfficer" required placeholder="Imię i nazwisko / numer odznaki">
+              </div>
+              <div class="field">
+                <label for="search-subject">Przeszukiwana osoba</label>
+                <input id="search-subject" name="searchSubject" required placeholder="Imię i nazwisko / opis osoby">
+              </div>
+              <div class="field">
+                <label for="search-date">Data i godzina</label>
+                <input id="search-date" name="searchDate" type="datetime-local">
+              </div>
+              <div class="field">
+                <label for="search-location">Miejsce przeszukania</label>
+                <input id="search-location" name="searchLocation" placeholder="Lokalizacja">
+              </div>
+              <div class="field full">
+                <label for="search-reason">Powód i przebieg przeszukania</label>
+                <textarea id="search-reason" name="searchReason" required placeholder="Podstawa, przebieg czynności i istotne okoliczności..."></textarea>
+              </div>
+              <div class="field full">
+                <label for="search-items">Znalezione przedmioty</label>
+                <textarea id="search-items" name="searchItems" placeholder="Wpisz przedmioty znalezione przy osobie, każdy w osobnej linii..."></textarea>
+              </div>
+            </div>
+
+            <h3 class="section-title">Zrzuty ekranu</h3>
+            <div class="field-grid">
+              <div class="field full">
+                <div class="upload-zone" id="search-drop-zone">
+                  <strong>Dodaj zrzut ekranu do raportu</strong>
+                  <span>Wybierz obraz albo wklej zrzut ze schowka przez Ctrl+V.</span>
+                  <div class="upload-actions">
+                    <label class="button button-secondary small-button" for="search-images">Wybierz obrazy</label>
+                    <input id="search-images" type="file" accept="image/*" multiple>
+                  </div>
+                </div>
+                <div class="screenshot-grid" id="search-image-list"></div>
+                <p class="ai-pending">Skanowanie działa lokalnie w przeglądarce. Przy pierwszym użyciu pobierze się model AI (około 220 MB); obrazy nie są wysyłane. Rozpoznane nazwy i ilości wymagają sprawdzenia przez funkcjonariusza.</p>
+                <div class="scan-settings">
+                  <div class="field">
+                    <label for="search-grid-columns">Kolumny ekwipunku</label>
+                    <input id="search-grid-columns" type="number" min="1" max="12" value="7">
+                  </div>
+                  <div class="field">
+                    <label for="search-grid-rows">Rzędy ekwipunku</label>
+                    <input id="search-grid-rows" type="number" min="1" max="12" value="6">
+                  </div>
+                  <div class="field">
+                    <label for="search-grid-left">Początek siatki od lewej (%)</label>
+                    <input id="search-grid-left" type="number" min="0" max="90" value="2">
+                  </div>
+                  <div class="field">
+                    <label for="search-grid-top">Początek siatki od góry (%)</label>
+                    <input id="search-grid-top" type="number" min="0" max="90" value="10">
+                  </div>
+                  <div class="field">
+                    <label for="search-grid-width">Szerokość siatki (%)</label>
+                    <input id="search-grid-width" type="number" min="5" max="100" value="92">
+                  </div>
+                  <div class="field">
+                    <label for="search-grid-height">Wysokość siatki (%)</label>
+                    <input id="search-grid-height" type="number" min="5" max="100" value="89">
+                  </div>
+                  <div class="field full">
+                    <label for="search-item-candidates">Rozpoznawane przedmioty</label>
+                    <textarea id="search-item-candidates" aria-describedby="search-candidates-hint">Torba sportowa
+Zapalniczka
+Zestaw narzędzi
+Dokument tożsamości
+Kluczyk samochodowy
+Powerbank
+Szklanka z napojem
+Karta płatnicza
+Nabój
+Zapora drogowa
+Kajdanki
+Kolczatka drogowa
+Portfel
+Tablica rejestracyjna
+Gotówka
+Nożyce do metalu
+Karta dostępu
+Urządzenie elektroniczne
+Akumulator
+Telefon
+Broń palna
+Nóż
+Radio
+Inny przedmiot
+Puste miejsce</textarea>
+                    <p id="search-candidates-hint" class="optional" style="margin:6px 0 0;font-size:11px">Lista służy do klasyfikacji wizualnej. Możesz dopisać nazwy przedmiotów z używanego ekwipunku.</p>
+                  </div>
+                </div>
+                <div class="scan-actions">
+                  <button class="button button-secondary" type="button" id="scan-search-button">Skanuj ekwipunek AI</button>
+                  <button class="button button-quiet" type="button" id="add-scan-results-button" disabled>Dodaj wyniki do znalezionych przedmiotów</button>
+                </div>
+                <p class="scan-progress" id="scan-progress" role="status" aria-live="polite"></p>
+                <div class="scan-results" id="scan-results"></div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="button button-primary" type="button" id="save-search-button">Zapisz raport</button>
+              <button class="button button-secondary" type="button" id="copy-search-button">Kopiuj raport</button>
+              <button class="button button-secondary" type="button" id="print-search-button">Drukuj / zapisz PDF</button>
+              <button class="button button-quiet" type="reset">Wyczyść formularz</button>
+            </div>
+            <p class="toast" id="search-toast" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <div>
+          <aside class="card search-preview" aria-labelledby="search-preview-title">
+            <div class="card-header preview-toolbar">
+              <div>
+                <h2 id="search-preview-title">Podgląd protokołu</h2>
+                <p>Raport i dołączone zrzuty ekranu.</p>
+              </div>
+            </div>
+            <div class="preview-paper" id="search-preview" aria-live="polite">
+              <p class="preview-placeholder">Uzupełnij formularz przeszukania.</p>
+            </div>
+            <p class="privacy-note">Raporty i obrazy zapisujemy lokalnie w tej przeglądarce.</p>
+          </aside>
+          <section class="card" style="margin-top: 18px" aria-labelledby="saved-searches-title">
+            <div class="card-header">
+              <h2 id="saved-searches-title">Zapisane raporty przeszukań</h2>
+              <p>Przechowywane na tym urządzeniu.</p>
+            </div>
+            <div class="search-saved" id="saved-searches">
+              <p class="list-empty">Nie zapisano jeszcze raportów przeszukania.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.querySelector("#report-form");
+    const preview = document.querySelector("#preview");
+    const lawyerField = document.querySelector("#lawyer-field");
+    const toast = document.querySelector("#toast");
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function formValue(name) {
+      return new FormData(form).get(name)?.toString().trim() ?? "";
+    }
+
+    function reportText() {
+      const lawyerAnswer = formValue("lawyerPresent");
+      const values = [
+        ["Numer raportu", formValue("reportNumber")],
+        ["Data i godzina", formValue("reportDate") ? new Date(formValue("reportDate")).toLocaleString("pl-PL") : ""],
+        ["Funkcjonariusz", formValue("officer")],
+        ["Osoba zatrzymana", formValue("detained")],
+        ["Okoliczności działania", formValue("circumstances")],
+        ["Podjęte działania", formValue("actions")],
+        ["Współpraca zatrzymanego", formValue("cooperation")],
+        ["Adwokat", lawyerAnswer ? (lawyerAnswer === "Tak" ? `Tak${formValue("lawyer") ? ` — ${formValue("lawyer")}` : ""}` : "Nie") : ""],
+        ["Dodatkowe informacje", formValue("notes")]
+      ];
+
+      return [
+        "RAPORT Z INTERWENCJI — LSPD",
+        "",
+        ...values.filter(([, value]) => value).flatMap(([label, value]) => [`${label}:`, value, ""])
+      ].join("\n").trim();
+    }
+
+    function renderPreview() {
+      const lawyerAnswer = formValue("lawyerPresent");
+      const values = [
+        ["Numer raportu", formValue("reportNumber")],
+        ["Data i godzina", formValue("reportDate") ? new Date(formValue("reportDate")).toLocaleString("pl-PL") : ""],
+        ["Funkcjonariusz", formValue("officer")],
+        ["Osoba zatrzymana", formValue("detained")]
+      ];
+      const sections = [
+        ["Okoliczności działania", formValue("circumstances")],
+        ["Podjęte działania", formValue("actions")],
+        ["Współpraca zatrzymanego", formValue("cooperation")],
+        ["Adwokat", lawyerAnswer ? (lawyerAnswer === "Tak" ? `Tak${formValue("lawyer") ? ` — ${formValue("lawyer")}` : ""}` : "Nie") : ""],
+        ["Dodatkowe informacje", formValue("notes")]
+      ];
+      const hasContent = values.some(([, value]) => value) || sections.some(([, value]) => value);
+
+      if (!hasContent) {
+        preview.innerHTML = '<p class="preview-placeholder">Wypełnij formularz, aby wygenerować raport.</p>';
+        return;
+      }
+
+      const meta = values.filter(([, value]) => value)
+        .map(([label, value]) => `<div><b>${escapeHtml(label)}</b><span>${escapeHtml(value)}</span></div>`)
+        .join("");
+      const content = sections.filter(([, value]) => value)
+        .map(([label, value]) => `<section class="report-block"><h3>${escapeHtml(label)}</h3><p>${escapeHtml(value)}</p></section>`)
+        .join("");
+
+      preview.innerHTML = `<article class="report"><div class="report-title">RAPORT Z INTERWENCJI — LSPD</div>${meta ? `<div class="report-meta">${meta}</div>` : ""}${content}</article>`;
+    }
+
+    function updateLawyerField() {
+      const showLawyer = formValue("lawyerPresent") === "Tak";
+      lawyerField.classList.toggle("hidden", !showLawyer);
+      document.querySelector("#lawyer").required = showLawyer;
+      renderPreview();
+    }
+
+    form.addEventListener("input", renderPreview);
+    form.addEventListener("change", updateLawyerField);
+    form.addEventListener("reset", () => {
+      requestAnimationFrame(() => {
+        toast.textContent = "";
+        updateLawyerField();
+      });
+    });
+
+    document.querySelector("#copy-button").addEventListener("click", async () => {
+      const text = reportText();
+      if (!text.includes("\n")) {
+        toast.textContent = "Najpierw uzupełnij dane raportu.";
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        toast.textContent = "Raport skopiowany do schowka.";
+      } catch (error) {
+        toast.textContent = "Nie udało się skopiować raportu. Sprawdź uprawnienia przeglądarki.";
+        console.error("Nie udało się skopiować raportu:", error);
+      }
+    });
+
+    document.querySelector("#print-button").addEventListener("click", () => {
+      if (!reportText().includes("\n")) {
+        toast.textContent = "Najpierw uzupełnij dane raportu.";
+        return;
+      }
+      window.print();
+    });
+
+    const caseForm = document.querySelector("#case-form");
+    const casePreview = document.querySelector("#case-preview");
+    const caseToast = document.querySelector("#case-toast");
+    const savedCasesElement = document.querySelector("#saved-cases");
+    const savedCasesKey = "lspd-case-descriptions";
+
+    function caseValue(name) {
+      return new FormData(caseForm).get(name)?.toString().trim() ?? "";
+    }
+
+    function listValues(id) {
+      return [...document.querySelectorAll(`#${id} input`)]
+        .map(input => input.value.trim())
+        .filter(Boolean);
+    }
+
+    function caseData() {
+      const description = caseValue("caseDescription");
+      return {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        title: description.split(/\r?\n/)[0].slice(0, 60) || "Nowa sprawa",
+        description,
+        crimes: listValues("case-crimes"),
+        months: caseValue("caseMonths"),
+        fine: caseValue("caseFine"),
+        outcome: caseValue("caseOutcome"),
+        people: listValues("case-people"),
+        vehicles: listValues("case-vehicles"),
+        createdAt: new Date().toISOString()
+      };
+    }
+
+    function caseText(data = caseData()) {
+      const fields = [
+        ["Opis sprawy", caseValue("caseDescription") || data.description],
+        ["Przestępstwa", data.crimes.join(", ")],
+        ["Sugerowana kara", `${data.months || 0} mies. / $${data.fine || 0}`],
+        ["Dalsze postępowanie", data.outcome],
+        ["Osoby powiązane", data.people.join(", ")],
+        ["Pojazdy powiązane", data.vehicles.join(", ")]
+      ];
+      return [`OPIS SPRAWY — LSPD`, data.title, "", ...fields
+        .filter(([, value]) => value)
+        .flatMap(([label, value]) => [`${label}:`, value, ""])]
+        .join("\n").trim();
+    }
+
+    function renderCasePreview() {
+      const data = caseData();
+      const fields = [
+        ["Przestępstwa", data.crimes.join(", ")],
+        ["Sugerowana kara", `${data.months || 0} mies. / $${data.fine || 0}`],
+        ["Dalsze postępowanie", data.outcome],
+        ["Osoby powiązane", data.people.join(", ")],
+        ["Pojazdy powiązane", data.vehicles.join(", ")]
+      ];
+      const hasContent = caseValue("caseDescription")
+        || fields.some(([, value]) => value && value !== "0 mies. / $0");
+
+      if (!hasContent) {
+        casePreview.innerHTML = '<p class="preview-placeholder">Wypełnij formularz, aby przygotować opis sprawy.</p>';
+        return;
+      }
+
+      const meta = fields.filter(([, value]) => value)
+        .map(([label, value]) => `<div><b>${escapeHtml(label)}</b><span>${escapeHtml(value)}</span></div>`)
+        .join("");
+      const description = caseValue("caseDescription")
+        ? `<section class="report-block"><h3>Opis sprawy</h3><p>${escapeHtml(caseValue("caseDescription"))}</p></section>`
+        : "";
+      casePreview.innerHTML = `<article class="report"><div class="report-title">OPIS SPRAWY — LSPD</div><h3>${escapeHtml(data.title)}</h3>${meta ? `<div class="report-meta">${meta}</div>` : ""}${description}</article>`;
+    }
+
+    function renderCaseLists() {
+      document.querySelectorAll(".case-items").forEach(container => {
+        if (!container.children.length) {
+          container.innerHTML = `<p class="list-empty">${escapeHtml(container.dataset.placeholder)}</p>`;
+        }
+      });
+    }
+
+    function addCaseItem(container, value = "") {
+      container.querySelector(".list-empty")?.remove();
+      const row = document.createElement("div");
+      row.className = "case-item-row";
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = value;
+      input.setAttribute("aria-label", container.dataset.placeholder.replace(/^Nie dodano jeszcze |^Nie dodano |^Brak /, ""));
+      input.placeholder = "Wpisz dane";
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "icon-button";
+      remove.setAttribute("aria-label", "Usuń pozycję");
+      remove.textContent = "×";
+      remove.addEventListener("click", () => {
+        row.remove();
+        renderCaseLists();
+        renderCasePreview();
+      });
+      input.addEventListener("input", renderCasePreview);
+      row.append(input, remove);
+      container.append(row);
+      input.focus();
+      renderCasePreview();
+    }
+
+    document.querySelectorAll("[data-add-to]").forEach(button => {
+      button.addEventListener("click", () => addCaseItem(document.getElementById(button.dataset.addTo)));
+    });
+    caseForm.addEventListener("input", renderCasePreview);
+    caseForm.addEventListener("change", renderCasePreview);
+    caseForm.addEventListener("reset", () => {
+      requestAnimationFrame(() => {
+        document.querySelectorAll(".case-items").forEach(container => { container.replaceChildren(); });
+        renderCaseLists();
+        renderCasePreview();
+        caseToast.textContent = "";
+      });
+    });
+
+    function readSavedCases() {
+      const raw = localStorage.getItem(savedCasesKey);
+      if (!raw) return [];
+      const saved = JSON.parse(raw);
+      if (!Array.isArray(saved)) throw new Error("Zapisane opisy spraw mają nieprawidłowy format.");
+      return saved;
+    }
+
+    function renderSavedCases() {
+      try {
+        const savedCases = readSavedCases();
+        if (!savedCases.length) {
+          savedCasesElement.innerHTML = '<p class="list-empty">Nie zapisano jeszcze żadnej sprawy.</p>';
+          return;
+        }
+        savedCasesElement.innerHTML = savedCases.map(item => `
+          <article class="saved-case">
+            <div><div class="saved-case-title">${escapeHtml(item.title || "Nowa sprawa")}</div><div class="saved-case-meta">${new Date(item.createdAt).toLocaleDateString("pl-PL")}</div></div>
+            <div class="saved-case-actions">
+              <button class="button button-secondary" type="button" data-load-case="${escapeHtml(item.id)}">Wczytaj</button>
+              <button class="button button-quiet" type="button" data-delete-case="${escapeHtml(item.id)}" aria-label="Usuń zapis sprawy">Usuń</button>
+            </div>
+          </article>`).join("");
+      } catch (error) {
+        savedCasesElement.innerHTML = '<p class="list-empty">Nie udało się odczytać zapisanych spraw.</p>';
+        caseToast.textContent = "Błąd odczytu zapisanych spraw.";
+        console.error("Nie udało się odczytać zapisanych spraw:", error);
+      }
+    }
+
+    function loadCase(data) {
+      [
+        ["caseDescription", "description"],
+        ["caseMonths", "months"],
+        ["caseFine", "fine"],
+        ["caseOutcome", "outcome"]
+      ].forEach(([field, property]) => {
+        caseForm.elements[field].value = data[property] ?? "";
+      });
+      [
+        ["case-crimes", data.crimes],
+        ["case-people", data.people],
+        ["case-vehicles", data.vehicles]
+      ].forEach(([id, items]) => {
+        const container = document.getElementById(id);
+        container.replaceChildren();
+        items.forEach(item => addCaseItem(container, item));
+      });
+      renderCaseLists();
+      renderCasePreview();
+      caseToast.textContent = "Zapisana sprawa została wczytana do formularza.";
+      caseForm.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    savedCasesElement.addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      try {
+        const savedCases = readSavedCases();
+        if (button.dataset.loadCase) {
+          const selected = savedCases.find(item => item.id === button.dataset.loadCase);
+          if (!selected) throw new Error("Nie znaleziono zapisanej sprawy.");
+          loadCase(selected);
+        }
+        if (button.dataset.deleteCase) {
+          localStorage.setItem(savedCasesKey, JSON.stringify(savedCases.filter(item => item.id !== button.dataset.deleteCase)));
+          caseToast.textContent = "Zapisana sprawa została usunięta.";
+          renderSavedCases();
+        }
+      } catch (error) {
+        caseToast.textContent = "Nie udało się wykonać operacji na zapisanej sprawie.";
+        console.error("Nie udało się zmienić zapisanej sprawy:", error);
+      }
+    });
+
+    document.querySelector("#save-case-button").addEventListener("click", () => {
+      if (!caseForm.reportValidity()) return;
+      try {
+        const savedCases = readSavedCases();
+        savedCases.unshift(caseData());
+        localStorage.setItem(savedCasesKey, JSON.stringify(savedCases));
+        caseToast.textContent = "Opis sprawy został zapisany w tej przeglądarce.";
+        renderSavedCases();
+      } catch (error) {
+        caseToast.textContent = "Nie udało się zapisać sprawy. Sprawdź dostępne miejsce i uprawnienia przeglądarki.";
+        console.error("Nie udało się zapisać sprawy:", error);
+      }
+    });
+
+    document.querySelector("#copy-case-button").addEventListener("click", async () => {
+      if (!caseForm.reportValidity()) return;
+      try {
+        await navigator.clipboard.writeText(caseText());
+        caseToast.textContent = "Opis sprawy skopiowano do schowka.";
+      } catch (error) {
+        caseToast.textContent = "Nie udało się skopiować opisu. Sprawdź uprawnienia przeglądarki.";
+        console.error("Nie udało się skopiować opisu sprawy:", error);
+      }
+    });
+
+    document.querySelector("#print-case-button").addEventListener("click", () => {
+      if (!caseForm.reportValidity()) return;
+      window.print();
+    });
+
+    const searchForm = document.querySelector("#search-form");
+    const searchPreview = document.querySelector("#search-preview");
+    const searchToast = document.querySelector("#search-toast");
+    const searchProgress = document.querySelector("#scan-progress");
+    const searchImageList = document.querySelector("#search-image-list");
+    const savedSearchesElement = document.querySelector("#saved-searches");
+    const searchWorkspace = document.querySelector("#search-workspace");
+    const searchImagesInput = document.querySelector("#search-images");
+    const searchImages = [];
+    let searchDatabasePromise;
+    let searchListUrls = [];
+    let searchPreviewUrls = [];
+    let searchClassifierPromise;
+    let searchScanResults = [];
+    let searchScanRunning = false;
+    let searchScanQueued = false;
+
+    function openSearchDatabase() {
+      if (!("indexedDB" in window)) {
+        return Promise.reject(new Error("Ta przeglądarka nie obsługuje lokalnego zapisu raportów."));
+      }
+      if (!searchDatabasePromise) {
+        searchDatabasePromise = new Promise((resolve, reject) => {
+          const request = indexedDB.open("lspd-search-reports", 1);
+          request.onupgradeneeded = () => {
+            if (!request.result.objectStoreNames.contains("reports")) {
+              request.result.createObjectStore("reports", { keyPath: "id" });
+            }
+          };
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error || new Error("Nie udało się otworzyć lokalnej bazy raportów."));
+        });
+      }
+      return searchDatabasePromise;
+    }
+
+    async function searchDatabaseRequest(mode, action, value) {
+      const database = await openSearchDatabase();
+      return new Promise((resolve, reject) => {
+        const transaction = database.transaction("reports", mode);
+        const request = action === "getAll"
+          ? transaction.objectStore("reports").getAll()
+          : transaction.objectStore("reports")[action](value);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error("Operacja na raporcie nie powiodła się."));
+        transaction.onerror = () => reject(transaction.error || new Error("Zapis raportu nie powiódł się."));
+      });
+    }
+
+    function searchValue(name) {
+      return new FormData(searchForm).get(name)?.toString().trim() ?? "";
+    }
+
+    function searchData() {
+      return {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        officer: searchValue("searchOfficer"),
+        subject: searchValue("searchSubject"),
+        date: searchValue("searchDate"),
+        location: searchValue("searchLocation"),
+        reason: searchValue("searchReason"),
+        items: searchValue("searchItems"),
+        images: searchImages.map(({ id, name, type, blob }) => ({ id, name, type, blob })),
+        createdAt: new Date().toISOString()
+      };
+    }
+
+    function searchText(data = searchData()) {
+      const fields = [
+        ["Funkcjonariusz przeszukujący", data.officer],
+        ["Przeszukiwana osoba", data.subject],
+        ["Data i godzina", data.date ? new Date(data.date).toLocaleString("pl-PL") : ""],
+        ["Miejsce", data.location],
+        ["Powód i przebieg przeszukania", data.reason],
+        ["Znalezione przedmioty", data.items]
+      ];
+      return ["RAPORT Z PRZESZUKANIA — AIAD", "", ...fields
+        .filter(([, value]) => value)
+        .flatMap(([label, value]) => [`${label}:`, value, ""])]
+        .concat(data.images.length ? [`Załączone zrzuty ekranu: ${data.images.map(image => image.name).join(", ")}`] : [])
+        .join("\n").trim();
+    }
+
+    function renderSearchImages() {
+      searchListUrls.forEach(URL.revokeObjectURL);
+      searchListUrls = [];
+      searchImageList.innerHTML = searchImages.map(image => {
+        const url = URL.createObjectURL(image.blob);
+        searchListUrls.push(url);
+        return `<article class="screenshot-card"><img src="${url}" alt="Podgląd zrzutu ${escapeHtml(image.name)}"><div class="screenshot-footer"><span class="screenshot-name">${escapeHtml(image.name)}</span><button class="icon-button" type="button" data-remove-image="${escapeHtml(image.id)}" aria-label="Usuń zrzut ${escapeHtml(image.name)}">×</button></div></article>`;
+      }).join("");
+      if (!searchImages.length) {
+        searchImageList.innerHTML = '<p class="list-empty">Nie dodano jeszcze zrzutów ekranu.</p>';
+      }
+    }
+
+    function renderSearchPreview() {
+      searchPreviewUrls.forEach(URL.revokeObjectURL);
+      searchPreviewUrls = [];
+      const data = searchData();
+      const fields = [
+        ["Funkcjonariusz przeszukujący", data.officer],
+        ["Przeszukiwana osoba", data.subject],
+        ["Data i godzina", data.date ? new Date(data.date).toLocaleString("pl-PL") : ""],
+        ["Miejsce", data.location]
+      ];
+      const hasContent = fields.some(([, value]) => value) || data.reason || data.items || data.images.length;
+      if (!hasContent) {
+        searchPreview.innerHTML = '<p class="preview-placeholder">Uzupełnij formularz przeszukania.</p>';
+        return;
+      }
+
+      const meta = fields.filter(([, value]) => value)
+        .map(([label, value]) => `<div><b>${escapeHtml(label)}</b><span>${escapeHtml(value)}</span></div>`)
+        .join("");
+      const reason = data.reason
+        ? `<section class="report-block"><h3>Powód i przebieg przeszukania</h3><p>${escapeHtml(data.reason)}</p></section>`
+        : "";
+      const items = data.items
+        ? `<section class="report-block"><h3>Znalezione przedmioty · do weryfikacji</h3><p>${escapeHtml(data.items)}</p></section>`
+        : "";
+      const screenshots = data.images.length
+        ? `<div class="search-screenshots">${data.images.map(image => {
+          const url = URL.createObjectURL(image.blob);
+          searchPreviewUrls.push(url);
+          return `<figure><img src="${url}" alt="Załączony zrzut ekranu"><figcaption>${escapeHtml(image.name)}</figcaption></figure>`;
+        }).join("")}</div>`
+        : "";
+      searchPreview.innerHTML = `<article class="report"><div class="report-title">RAPORT Z PRZESZUKANIA — AIAD</div>${meta ? `<div class="report-meta">${meta}</div>` : ""}${reason}${items}${screenshots}</article>`;
+    }
+
+    function addSearchImages(files) {
+      const validFiles = [...files].filter(file => file.type.startsWith("image/"));
+      const invalidCount = files.length - validFiles.length;
+      const oversized = validFiles.filter(file => file.size > 15 * 1024 * 1024);
+      const accepted = validFiles.filter(file => file.size <= 15 * 1024 * 1024);
+      if (accepted.length) clearSearchScanResults();
+      accepted.forEach((file, index) => {
+        const name = file.name || `zrzut-ekranu-${Date.now()}-${index + 1}.png`;
+        searchImages.push({
+          id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+          name,
+          type: file.type,
+          blob: file
+        });
+      });
+      if (invalidCount || oversized.length) {
+        searchToast.textContent = `${invalidCount ? `${invalidCount} plik(ów) pominięto — wymagany jest obraz. ` : ""}${oversized.length ? `${oversized.length} obraz(ów) przekracza limit 15 MB.` : ""}`.trim();
+      } else if (accepted.length) {
+        searchToast.textContent = `Dodano ${accepted.length} zrzut(ów). Rozpoczynam skanowanie AI...`;
+      }
+      renderSearchImages();
+      renderSearchPreview();
+      if (accepted.length) scheduleInventoryScan();
+    }
+
+    function clearSearchScanResults() {
+      searchScanResults.forEach(result => URL.revokeObjectURL(result.dataUrl));
+      searchScanResults = [];
+      document.querySelector("#scan-results").replaceChildren();
+      document.querySelector("#add-scan-results-button").disabled = true;
+      searchProgress.textContent = "";
+    }
+
+    const inventoryLabelTranslations = {
+      "Torba sportowa": "a duffel bag",
+      "Zapalniczka": "a lighter",
+      "Zestaw narzędzi": "a toolbox with tools",
+      "Dokument tożsamości": "an identity card",
+      "Kluczyk samochodowy": "a car key fob",
+      "Powerbank": "a blue power bank",
+      "Szklanka z napojem": "a glass of whiskey",
+      "Karta płatnicza": "an orange bank card",
+      "Nabój": "a bullet cartridge",
+      "Zapora drogowa": "a yellow road barricade",
+      "Kajdanki": "a pair of handcuffs",
+      "Kolczatka drogowa": "a road spike strip",
+      "Portfel": "a black wallet",
+      "Tablica rejestracyjna": "a vehicle license plate",
+      "Gotówka": "a stack of cash",
+      "Nożyce do metalu": "a pair of red bolt cutters",
+      "Karta dostępu": "an orange access card",
+      "Urządzenie elektroniczne": "a small black electronic device",
+      "Akumulator": "a small blue battery",
+      "Telefon": "a mobile phone",
+      "Broń palna": "a handgun",
+      "Nóż": "a knife",
+      "Radio": "a police radio",
+      "Inny przedmiot": "an unknown object",
+      "Puste miejsce": "an empty dark inventory slot with no item"
+    };
+
+    function getInventoryCandidates() {
+      const labels = [...new Set(document.querySelector("#search-item-candidates").value
+        .split(/\r?\n/)
+        .map(label => label.trim())
+        .filter(Boolean))];
+      if (labels.length < 2) throw new Error("Wpisz co najmniej dwa rodzaje przedmiotów do rozpoznania.");
+      return labels.map(label => ({
+        label,
+        prompt: `a video game inventory icon showing ${inventoryLabelTranslations[label] || label}`
+      }));
+    }
+
+    function scheduleInventoryScan() {
+      if (searchScanRunning) {
+        searchScanQueued = true;
+        return;
+      }
+      setTimeout(() => { scanInventory(); }, 0);
+    }
+
+    async function getSearchClassifier() {
+      if (!searchClassifierPromise) {
+        searchClassifierPromise = (async () => {
+          searchToast.textContent = "";
+          searchProgress.textContent = "Pobieranie silnika rozpoznawania obrazów...";
+          const { pipeline, env } = await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2");
+          env.useBrowserCache = true;
+          if (env.backends?.onnx?.wasm) env.backends.onnx.wasm.numThreads = 1;
+          searchProgress.textContent = "Pobieranie modelu AI (przy pierwszym użyciu może to chwilę potrwać)...";
+          return pipeline(
+            "zero-shot-image-classification",
+            "Xenova/clip-vit-base-patch32",
+            {
+              dtype: "q8",
+              progress_callback: progress => {
+                if (progress.status === "progress" && progress.total) {
+                  const percent = Math.round(progress.loaded / progress.total * 100);
+                  searchProgress.textContent = `Pobieranie modelu AI: ${percent}%`;
+                } else if (progress.status === "done") {
+                  searchProgress.textContent = "Model AI gotowy.";
+                }
+              }
+            }
+          );
+        })().catch(error => {
+          searchClassifierPromise = undefined;
+          throw error;
+        });
+      }
+      return searchClassifierPromise;
+    }
+
+    async function makeInventoryCrop(imageBlob, imageName, row, column, index, grid) {
+      const bitmap = await createImageBitmap(imageBlob);
+      const slotWidth = bitmap.width * grid.width / grid.columns;
+      const slotHeight = bitmap.height * grid.height / grid.rows;
+      const sourceX = bitmap.width * grid.left + column * slotWidth + slotWidth * 0.09;
+      const sourceY = bitmap.height * grid.top + row * slotHeight + slotHeight * 0.18;
+      const sourceWidth = slotWidth * 0.82;
+      const sourceHeight = slotHeight * 0.74;
+      const canvas = document.createElement("canvas");
+      canvas.width = 224;
+      canvas.height = 224;
+      const context = canvas.getContext("2d", { willReadFrequently: true });
+      if (!context) {
+        bitmap.close();
+        throw new Error("Nie udało się przygotować obrazu do analizy.");
+      }
+      context.fillStyle = "#17191f";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(bitmap, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height);
+      bitmap.close();
+      const { data } = context.getImageData(12, 12, canvas.width - 24, canvas.height - 24);
+      let sum = 0;
+      let squareSum = 0;
+      let samples = 0;
+      for (let pixel = 0; pixel < data.length; pixel += 16) {
+        const luminance = data[pixel] * 0.299 + data[pixel + 1] * 0.587 + data[pixel + 2] * 0.114;
+        sum += luminance;
+        squareSum += luminance * luminance;
+        samples++;
+      }
+      const deviation = Math.sqrt(squareSum / samples - (sum / samples) ** 2);
+      const blob = await new Promise((resolve, reject) => {
+        canvas.toBlob(result => result ? resolve(result) : reject(new Error("Nie udało się wyciąć pola ekwipunku.")), "image/jpeg", 0.88);
+      });
+      return {
+        imageName,
+        row: row + 1,
+        column: column + 1,
+        index,
+        blank: deviation < 4,
+        dataUrl: URL.createObjectURL(blob)
+      };
+    }
+
+    function renderInventoryScanResults() {
+      const container = document.querySelector("#scan-results");
+      const addButton = document.querySelector("#add-scan-results-button");
+      addButton.disabled = !searchScanResults.some(result => result.label !== "Puste miejsce");
+      if (!searchScanResults.length) {
+        container.innerHTML = "";
+        return;
+      }
+      container.innerHTML = searchScanResults.map((result, resultIndex) => {
+        const confidence = Math.round(result.confidence * 100);
+        const options = result.options.map(option =>
+          `<option value="${option.index}" ${option.label === result.label ? "selected" : ""}>${escapeHtml(option.label)} · ${Math.round(option.score * 100)}%</option>`
+        ).join("");
+        return `<div class="scan-result">
+          <div class="scan-result-caption">Zrzut: ${escapeHtml(result.imageName)}<br>Pole ${result.row}, kolumna ${result.column} · <span class="${confidence < 15 ? "confidence-low" : ""}">${confidence}% pewności</span></div>
+          <select aria-label="Rozpoznany przedmiot — pole ${result.row}, kolumna ${result.column}" data-scan-result="${resultIndex}">${options}</select>
+        </div>`;
+      }).join("");
+    }
+
+    async function scanInventory() {
+      if (searchScanRunning) {
+        searchScanQueued = true;
+        return;
+      }
+      const button = document.querySelector("#scan-search-button");
+      const progress = document.querySelector("#scan-progress");
+      const scanResultsElement = document.querySelector("#scan-results");
+      const gridValues = ["columns", "rows", "left", "top", "width", "height"].map(name =>
+        Number(document.querySelector(`#search-grid-${name}`).value)
+      );
+      const [columns, rows, leftPercent, topPercent, widthPercent, heightPercent] = gridValues;
+      if (!searchImages.length) {
+        progress.textContent = "Najpierw dodaj zrzut ekranu ekwipunku.";
+        return;
+      }
+      if (!gridValues.every(Number.isFinite) || columns < 1 || rows < 1
+        || columns > 12 || rows > 12 || leftPercent < 0 || topPercent < 0
+        || widthPercent <= 0 || heightPercent <= 0
+        || leftPercent + widthPercent > 100 || topPercent + heightPercent > 100) {
+        progress.textContent = "Ustaw poprawną liczbę rzędów i kolumn oraz obszar siatki mieszczący się w obrazie.";
+        return;
+      }
+      if (columns * rows * searchImages.length > 84) {
+        progress.textContent = "Limit analizy to 84 pola naraz. Zmniejsz siatkę lub analizuj mniej zrzutów.";
+        return;
+      }
+
+      let candidates;
+      try {
+        candidates = getInventoryCandidates();
+      } catch (error) {
+        progress.textContent = error.message;
+        return;
+      }
+
+      button.disabled = true;
+      searchScanRunning = true;
+      document.querySelector("#add-scan-results-button").disabled = true;
+      searchScanResults.forEach(result => URL.revokeObjectURL(result.dataUrl));
+      searchScanResults = [];
+      scanResultsElement.replaceChildren();
+      try {
+        const classifier = await getSearchClassifier();
+        const grid = {
+          columns, rows,
+          left: leftPercent / 100,
+          top: topPercent / 100,
+          width: widthPercent / 100,
+          height: heightPercent / 100
+        };
+        const total = columns * rows * searchImages.length;
+        let processed = 0;
+        for (const image of searchImages) {
+          for (let row = 0; row < rows; row++) {
+            for (let column = 0; column < columns; column++) {
+              processed++;
+              progress.textContent = `Analizuję pole ${processed} z ${total} — ${image.name}...`;
+              const crop = await makeInventoryCrop(image.blob, image.name, row, column, processed, grid);
+              if (crop.blank) {
+                URL.revokeObjectURL(crop.dataUrl);
+                continue;
+              }
+              const predictions = await classifier(crop.dataUrl, candidates.map(candidate => candidate.prompt));
+              URL.revokeObjectURL(crop.dataUrl);
+              const options = predictions
+                .map(prediction => ({
+                  label: candidates.find(candidate => candidate.prompt === prediction.label)?.label ?? prediction.label,
+                  score: prediction.score
+                }))
+                .sort((first, second) => second.score - first.score)
+                .slice(0, 5)
+                .map((option, index) => ({ ...option, index }));
+              const best = options[0];
+              if (!best || best.label === "Puste miejsce") continue;
+              searchScanResults.push({
+                imageName: crop.imageName,
+                row: crop.row,
+                column: crop.column,
+                label: best.label,
+                confidence: best.score,
+                options
+              });
+              renderInventoryScanResults();
+            }
+          }
+        }
+        progress.textContent = searchScanResults.length
+          ? `Gotowe: ${searchScanResults.length} pól z przedmiotami do sprawdzenia. AI nie odczytuje ilości — zweryfikuj zrzut przed zatwierdzeniem.`
+          : "Nie rozpoznano przedmiotów. Sprawdź wymiary siatki i jej położenie na zrzucie.";
+      } catch (error) {
+        progress.textContent = "Nie udało się uruchomić analizy AI. Sprawdź połączenie internetowe i spróbuj ponownie.";
+        searchToast.textContent = error.message || "Wystąpił nieznany błąd analizy AI.";
+        console.error("Nie udało się przeanalizować ekwipunku:", error);
+      } finally {
+        searchScanRunning = false;
+        button.disabled = false;
+        if (searchScanQueued) {
+          searchScanQueued = false;
+          scheduleInventoryScan();
+        }
+      }
+    }
+
+    document.querySelector("#scan-search-button").addEventListener("click", scanInventory);
+
+    document.querySelector("#scan-results").addEventListener("change", event => {
+      const select = event.target.closest("[data-scan-result]");
+      if (!select) return;
+      const result = searchScanResults[Number(select.dataset.scanResult)];
+      const option = result?.options.find(item => item.index === Number(select.value));
+      if (!result || !option) return;
+      result.label = option.label;
+      result.confidence = option.score;
+      renderInventoryScanResults();
+    });
+
+    document.querySelector("#add-scan-results-button").addEventListener("click", () => {
+      const recognized = searchScanResults.filter(result => result.label !== "Puste miejsce");
+      if (!recognized.length) {
+        searchToast.textContent = "Brak rozpoznanych przedmiotów do dodania.";
+        return;
+      }
+      const itemsField = searchForm.elements.searchItems;
+      const lines = recognized.map(result =>
+        `${result.label} — ${result.imageName}, pole ${result.row}/${result.column} (${Math.round(result.confidence * 100)}% pewności; ilość do sprawdzenia)`
+      );
+      itemsField.value = [itemsField.value.trim(), ...lines].filter(Boolean).join("\n");
+      renderSearchPreview();
+      searchToast.textContent = `Dodano ${lines.length} rozpoznanych pól do listy przedmiotów. Zweryfikuj nazwy i ilości.`;
+    });
+
+    searchImagesInput.addEventListener("change", () => {
+      addSearchImages(searchImagesInput.files);
+      searchImagesInput.value = "";
+    });
+
+    window.addEventListener("paste", event => {
+      if (searchWorkspace.hidden) return;
+      const files = [...(event.clipboardData?.items ?? [])]
+        .filter(item => item.type.startsWith("image/"))
+        .map(item => item.getAsFile())
+        .filter(Boolean);
+      if (files.length) {
+        event.preventDefault();
+        addSearchImages(files);
+      }
+    });
+
+    searchImageList.addEventListener("click", event => {
+      const button = event.target.closest("[data-remove-image]");
+      if (!button) return;
+      const index = searchImages.findIndex(image => image.id === button.dataset.removeImage);
+      if (index !== -1) searchImages.splice(index, 1);
+      clearSearchScanResults();
+      renderSearchImages();
+      renderSearchPreview();
+    });
+
+    searchForm.addEventListener("input", renderSearchPreview);
+    searchForm.addEventListener("reset", () => {
+      requestAnimationFrame(() => {
+        searchImages.length = 0;
+        clearSearchScanResults();
+        searchToast.textContent = "";
+        searchImagesInput.value = "";
+        renderSearchImages();
+        renderSearchPreview();
+      });
+    });
+
+    async function renderSavedSearches() {
+      try {
+        const reports = await searchDatabaseRequest("readonly", "getAll");
+        reports.sort((left, right) => right.createdAt.localeCompare(left.createdAt));
+        if (!reports.length) {
+          savedSearchesElement.innerHTML = '<p class="list-empty">Nie zapisano jeszcze raportów przeszukania.</p>';
+          return;
+        }
+        savedSearchesElement.innerHTML = reports.map(report => `
+          <article class="saved-case">
+            <div><div class="saved-case-title">${escapeHtml(report.subject || "Nieznana osoba")}</div><div class="saved-case-meta">${escapeHtml(report.officer || "Nieznany funkcjonariusz")} · ${new Date(report.createdAt).toLocaleDateString("pl-PL")} · ${(report.images ?? []).length} zrzut(ów)</div></div>
+            <div class="saved-case-actions">
+              <button class="button button-secondary" type="button" data-load-search="${escapeHtml(report.id)}">Wczytaj</button>
+              <button class="button button-quiet" type="button" data-delete-search="${escapeHtml(report.id)}" aria-label="Usuń zapis raportu">Usuń</button>
+            </div>
+          </article>`).join("");
+      } catch (error) {
+        savedSearchesElement.innerHTML = '<p class="list-empty">Nie udało się odczytać zapisanych raportów.</p>';
+        searchToast.textContent = "Błąd odczytu zapisanych raportów przeszukania.";
+        console.error("Nie udało się odczytać zapisanych raportów przeszukania:", error);
+      }
+    }
+
+    searchForm.addEventListener("submit", event => event.preventDefault());
+    document.querySelector("#save-search-button").addEventListener("click", async () => {
+      if (!searchForm.reportValidity()) return;
+      try {
+        await searchDatabaseRequest("readwrite", "put", searchData());
+        searchToast.textContent = "Raport i zrzuty zapisano lokalnie w tej przeglądarce.";
+        await renderSavedSearches();
+      } catch (error) {
+        searchToast.textContent = "Nie udało się zapisać raportu. Sprawdź dostępne miejsce i uprawnienia przeglądarki.";
+        console.error("Nie udało się zapisać raportu przeszukania:", error);
+      }
+    });
+
+    document.querySelector("#copy-search-button").addEventListener("click", async () => {
+      if (!searchForm.reportValidity()) return;
+      try {
+        await navigator.clipboard.writeText(searchText());
+        searchToast.textContent = "Raport przeszukania skopiowano do schowka.";
+      } catch (error) {
+        searchToast.textContent = "Nie udało się skopiować raportu. Sprawdź uprawnienia przeglądarki.";
+        console.error("Nie udało się skopiować raportu przeszukania:", error);
+      }
+    });
+
+    document.querySelector("#print-search-button").addEventListener("click", () => {
+      if (!searchForm.reportValidity()) return;
+      window.print();
+    });
+
+    savedSearchesElement.addEventListener("click", async event => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      try {
+        if (button.dataset.loadSearch) {
+          const report = await searchDatabaseRequest("readonly", "get", button.dataset.loadSearch);
+          if (!report) throw new Error("Nie znaleziono zapisanego raportu przeszukania.");
+          [["searchOfficer", "officer"], ["searchSubject", "subject"], ["searchDate", "date"], ["searchLocation", "location"], ["searchReason", "reason"], ["searchItems", "items"]]
+            .forEach(([field, property]) => { searchForm.elements[field].value = report[property] ?? ""; });
+          searchImages.splice(0, searchImages.length, ...(report.images ?? []));
+          clearSearchScanResults();
+          renderSearchImages();
+          renderSearchPreview();
+          searchToast.textContent = "Wczytano zapisany raport wraz ze zrzutami ekranu.";
+          searchForm.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+        if (button.dataset.deleteSearch) {
+          await searchDatabaseRequest("readwrite", "delete", button.dataset.deleteSearch);
+          searchToast.textContent = "Zapisany raport przeszukania został usunięty.";
+          await renderSavedSearches();
+        }
+      } catch (error) {
+        searchToast.textContent = "Nie udało się wykonać operacji na zapisanym raporcie.";
+        console.error("Nie udało się zmienić zapisanego raportu przeszukania:", error);
+      }
+    });
+
+    document.querySelectorAll(".workspace-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".workspace-tab").forEach(item => {
+          item.setAttribute("aria-selected", String(item === tab));
+        });
+        document.querySelectorAll(".workspace").forEach(workspace => {
+          const active = workspace.id === tab.getAttribute("aria-controls");
+          workspace.hidden = !active;
+          workspace.classList.toggle("active-workspace", active);
+        });
+        if (tab.id === "search-tab") renderSavedSearches();
+      });
+    });
+
+    renderCaseLists();
+    renderCasePreview();
+    renderSavedCases();
+    renderSearchImages();
+    renderSearchPreview();
+    updateLawyerField();
+  </script>
+</body>
+</html>
