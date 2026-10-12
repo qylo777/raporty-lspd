@@ -610,7 +610,7 @@
       <section class="page-heading">
         <div class="eyebrow">AIAD · dokumentacja służbowa</div>
         <h1>Raport z przeszukania</h1>
-        <p>Zarejestruj przebieg przeszukania, znalezione przedmioty i dołącz zrzuty ekranu.</p>
+        <p>AIAD pełni funkcję wewnętrznego nadzoru LSPD: zwykle zajmuje się skargami, postępowaniami dotyczącymi działań funkcjonariuszy i audytami. Dokładny zakres oraz podstawę czynności określają procedury serwera. Formularz pozwala dokumentować przeszukania funkcjonariuszy i obywateli.</p>
       </section>
 
       <div class="search-layout">
@@ -626,6 +626,7 @@
                 <select id="search-template">
                   <option value="">Wybierz szablon…</option>
                   <option value="person">Przeszukanie osoby</option>
+                  <option value="officer">Czynności wobec funkcjonariusza</option>
                   <option value="vehicle">Przeszukanie pojazdu</option>
                 </select>
               </div>
@@ -638,8 +639,16 @@
                 <input id="search-officer" name="searchOfficer" list="officer-directory" autocomplete="off" required placeholder="Wpisz, aby wyszukać funkcjonariusza">
               </div>
               <div class="field">
-                <label for="search-subject">Przeszukiwana osoba</label>
-                <input id="search-subject" name="searchSubject" required placeholder="Imię i nazwisko / opis osoby">
+                <label for="search-subject">Przeszukiwana osoba (obywatel lub funkcjonariusz)</label>
+                <input id="search-subject" name="searchSubject" list="officer-directory" autocomplete="off" required placeholder="Wpisz, aby wyszukać nazwisko">
+              </div>
+              <div class="field">
+                <label for="search-subject-type">Rodzaj osoby</label>
+                <select id="search-subject-type" name="searchSubjectType">
+                  <option value="">Nie określono</option>
+                  <option value="Obywatel">Obywatel</option>
+                  <option value="Funkcjonariusz">Funkcjonariusz</option>
+                </select>
               </div>
               <div class="field">
                 <label for="search-date">Data i godzina</label>
@@ -1741,6 +1750,7 @@ Puste miejsce</textarea>
         id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
         officer: searchValue("searchOfficer"),
         subject: searchValue("searchSubject"),
+        subjectType: searchValue("searchSubjectType"),
         date: searchValue("searchDate"),
         location: searchValue("searchLocation"),
         reason: searchValue("searchReason"),
@@ -1753,7 +1763,7 @@ Puste miejsce</textarea>
     function searchText(data = searchData()) {
       const fields = [
         ["Funkcjonariusz przeszukujący", data.officer],
-        ["Przeszukiwana osoba", data.subject],
+        ["Przeszukiwana osoba", data.subjectType ? `${data.subject} (${data.subjectType.toLocaleLowerCase("pl-PL")})` : data.subject],
         ["Data i godzina", data.date ? new Date(data.date).toLocaleString("pl-PL") : ""],
         ["Miejsce", data.location],
         ["Powód i przebieg przeszukania", data.reason],
@@ -1785,7 +1795,7 @@ Puste miejsce</textarea>
       const data = searchData();
       const fields = [
         ["Funkcjonariusz przeszukujący", data.officer],
-        ["Przeszukiwana osoba", data.subject],
+        ["Przeszukiwana osoba", data.subjectType ? `${data.subject} (${data.subjectType.toLocaleLowerCase("pl-PL")})` : data.subject],
         ["Data i godzina", data.date ? new Date(data.date).toLocaleString("pl-PL") : ""],
         ["Miejsce", data.location]
       ];
@@ -2234,7 +2244,7 @@ Puste miejsce</textarea>
         reports.sort((left, right) => right.createdAt.localeCompare(left.createdAt));
         const filter = document.querySelector("#search-history-search").value.trim().toLocaleLowerCase("pl-PL");
         const matchingReports = reports.filter(report =>
-          [report.subject, report.officer, report.location, report.reason, report.items]
+          [report.subject, report.subjectType, report.officer, report.location, report.reason, report.items]
             .some(value => String(value ?? "").toLocaleLowerCase("pl-PL").includes(filter))
         );
         if (!matchingReports.length) {
@@ -2305,6 +2315,7 @@ Puste miejsce</textarea>
     document.querySelector("#apply-search-template").addEventListener("click", () => {
       const templates = {
         person: "Przeszukanie osoby [imię i nazwisko] przeprowadzono w dniu [data] o godzinie [godzina] w [miejsce] na podstawie [podstawa]. Przebieg czynności: [opis, w tym informacja o poszanowaniu praw osoby].",
+        officer: "Czynności wobec funkcjonariusza [imię i nazwisko / numer odznaki] przeprowadzono w dniu [data] o godzinie [godzina] w [miejsce] w ramach [numer/nazwa postępowania lub audytu]. Podstawa i zakres czynności: [właściwe upoważnienie oraz zakres]. Przebieg i zabezpieczone materiały: [opis].",
         vehicle: "Przeszukanie pojazdu [marka/model, kolor, numer rejestracyjny] przeprowadzono w dniu [data] o godzinie [godzina] w [miejsce] na podstawie [podstawa]. Przebieg czynności i przeszukane elementy: [opis]."
       };
       const template = templates[document.querySelector("#search-template").value];
@@ -2313,6 +2324,9 @@ Puste miejsce</textarea>
         return;
       }
       if (searchValue("searchReason") && !window.confirm("Wstawienie szablonu zastąpi obecny opis przebiegu. Kontynuować?")) return;
+      if (document.querySelector("#search-template").value === "officer") {
+        searchForm.elements.searchSubjectType.value = "Funkcjonariusz";
+      }
       searchForm.elements.searchReason.value = template;
       searchForm.dispatchEvent(new Event("input", { bubbles: true }));
       renderSearchPreview();
@@ -2326,7 +2340,7 @@ Puste miejsce</textarea>
         if (button.dataset.loadSearch) {
           const report = await searchDatabaseRequest("readonly", "get", button.dataset.loadSearch);
           if (!report) throw new Error("Nie znaleziono zapisanego raportu przeszukania.");
-          [["searchOfficer", "officer"], ["searchSubject", "subject"], ["searchDate", "date"], ["searchLocation", "location"], ["searchReason", "reason"], ["searchItems", "items"]]
+          [["searchOfficer", "officer"], ["searchSubject", "subject"], ["searchSubjectType", "subjectType"], ["searchDate", "date"], ["searchLocation", "location"], ["searchReason", "reason"], ["searchItems", "items"]]
             .forEach(([field, property]) => { searchForm.elements[field].value = report[property] ?? ""; });
           searchImages.splice(0, searchImages.length, ...(report.images ?? []));
           clearSearchScanResults();
