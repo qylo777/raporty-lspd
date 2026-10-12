@@ -248,6 +248,35 @@
     .saved-case-actions .button { min-height: 32px; padding: 0 9px; font-size: 11px; }
     .search-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr); gap: 22px; align-items: start; }
     .search-preview { position: static; }
+    .aiad-layout { display: grid; gap: 20px; }
+    .aiad-case-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 22px; }
+    .aiad-case-grid .field.full { grid-column: 1 / -1; }
+    .aiad-checklist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin: 0 0 20px; padding: 0; list-style: none; }
+    .aiad-checklist label { display: flex; align-items: flex-start; gap: 9px; margin: 0; padding: 10px; border: 1px solid var(--border); border-radius: 9px; background: #0f1929; line-height: 1.45; }
+    .aiad-checklist input { width: 16px; height: 16px; min-height: 0; flex: 0 0 auto; margin: 1px 0 0; accent-color: var(--gold); }
+    .aiad-case-list, .aiad-event-list, .aiad-evidence-list, .officer-roster-list { display: grid; gap: 9px; padding: 12px 20px 20px; }
+    .aiad-case-item, .aiad-entry, .officer-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: #0f1929; }
+    .aiad-case-item[aria-current="true"] { border-color: var(--gold-dark); }
+    .aiad-case-item h3, .aiad-entry h3 { margin: 0; font-size: 13px; }
+    .aiad-case-item p, .aiad-entry p, .officer-row p { margin: 4px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .aiad-case-actions, .aiad-entry-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+    .aiad-case-actions .button, .aiad-entry-actions .button { min-height: 32px; padding: 0 9px; font-size: 11px; }
+    .aiad-detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+    .aiad-status { display: inline-flex; padding: 3px 8px; border: 1px solid #3b4c64; border-radius: 999px; color: var(--gold); font-size: 10px; font-weight: 700; }
+    .aiad-confidential { margin: 0 0 18px; padding: 12px 14px; border: 1px solid rgb(231 140 140 / 35%); border-radius: 10px; background: rgb(231 140 140 / 7%); color: #e7b4b4; font-size: 11px; line-height: 1.55; }
+    .officer-unit { display: inline-flex; padding: 3px 8px; border: 1px solid #3b4c64; border-radius: 999px; color: var(--gold); font-size: 10px; }
+    .officer-directory-form { display: grid; grid-template-columns: minmax(100px, .4fr) minmax(180px, 1fr) auto; gap: 8px; padding: 16px 20px 0; }
+    .officer-row-main { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .officer-row-name { font-size: 12px; font-weight: 700; }
+    .aiad-case-document { display: none; }
+    body.printing-aiad-case > *:not(#aiad-case-document) { display: none !important; }
+    body.printing-aiad-case #aiad-case-document { display: block; }
+    #aiad-case-document { color: #111; font: 12pt/1.6 Arial, sans-serif; }
+    #aiad-case-document h1 { margin: 0 0 16px; font-size: 19pt; }
+    #aiad-case-document h2 { margin: 20px 0 6px; border-bottom: 1px solid #888; font-size: 14pt; }
+    #aiad-case-document p, #aiad-case-document li { white-space: pre-wrap; }
+    #aiad-case-document .aiad-document-warning { padding: 10px; border: 1px solid #555; font-size: 10pt; }
+    .confidential-watermark { margin-bottom: 12px; color: #8b2525; font-size: 10pt; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
     .workspace-nav { flex-wrap: wrap; }
     .workspace-tab { min-width: 130px; }
     .utility-toolbar { align-items: stretch; }
@@ -298,6 +327,8 @@
       .case-preview { position: static; }
       .search-layout { grid-template-columns: 1fr; }
       .search-preview { position: static; }
+      .aiad-detail-grid { grid-template-columns: 1fr; }
+      .aiad-case-grid, .aiad-checklist { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 520px) {
@@ -322,7 +353,7 @@
     @media print {
       :root { color-scheme: light; }
       body { min-width: 0; background: #fff; color: #111; }
-      .topbar, .workspace-nav, .utility-toolbar, .writing-assistant-info, .writing-assistant-toolbar, .writing-suggestion, .page-heading, .form-card, .case-form-card, .search-form-card, .preview-toolbar, .privacy-note, .toast, .case-save-list, .search-saved, .saved-history-card, .notice, .ai-pending, .scan-settings, .scan-results, .scan-actions, .scan-progress, .scan-progress-panel { display: none !important; }
+      .topbar, .workspace-nav, .utility-toolbar, .writing-assistant-info, .writing-assistant-toolbar, .writing-suggestion, .page-heading, .form-card, .case-form-card, .search-form-card, .aiad-case-form-card, .officer-directory-card, .aiad-case-list-card, .aiad-detail-card, .preview-toolbar, .privacy-note, .toast, .case-save-list, .search-saved, .saved-history-card, .notice, .ai-pending, .scan-settings, .scan-results, .scan-actions, .scan-progress, .scan-progress-panel { display: none !important; }
       main { width: 100%; margin: 0; padding: 0; }
       .workspace:not(.active-workspace) { display: none !important; }
       .active-workspace { display: block !important; }
@@ -361,6 +392,7 @@
       <button class="workspace-tab" id="report-tab" type="button" role="tab" aria-selected="true" aria-controls="report-workspace">Raport z interwencji</button>
       <button class="workspace-tab" id="case-tab" type="button" role="tab" aria-selected="false" aria-controls="case-workspace">Opis sprawy</button>
       <button class="workspace-tab" id="search-tab" type="button" role="tab" aria-selected="false" aria-controls="search-workspace">Przeszukanie</button>
+      <button class="workspace-tab" id="aiad-tab" type="button" role="tab" aria-selected="false" aria-controls="aiad-workspace">Rejestr AIAD i kadra</button>
     </nav>
     <aside class="writing-assistant-info">
       <strong>Dyktowanie i korekta tekstu</strong>
@@ -606,6 +638,171 @@
       </div>
     </section>
 
+    <section class="workspace" id="aiad-workspace" role="tabpanel" aria-labelledby="aiad-tab" hidden>
+      <section class="page-heading">
+        <div class="eyebrow">AIAD · nadzór wewnętrzny</div>
+        <h1>Rejestr spraw AIAD</h1>
+        <p>Rejestruj skargi, kontrole i audyty dotyczące działań funkcjonariuszy. Zakres czynności i wymagane upoważnienia zawsze weryfikuj według aktualnych procedur serwera.</p>
+      </section>
+      <p class="aiad-confidential"><strong>POUFNE · DANE SŁUŻBOWE</strong><br>Sprawy i kadra są przechowywane lokalnie w tej przeglądarce. Kopia zapasowa może zawierać dane osobowe; chroń ją i udostępniaj wyłącznie uprawnionym osobom.</p>
+      <div class="aiad-layout">
+        <section class="card aiad-case-form-card" aria-labelledby="aiad-case-form-title">
+          <div class="card-header">
+            <h2 id="aiad-case-form-title">Nowa sprawa / edycja</h2>
+            <p>Uzupełnij podstawowe dane i zapisz, aby prowadzić oś czasu oraz ewidencję dowodów.</p>
+          </div>
+          <form id="aiad-case-form">
+            <input id="aiad-case-id" name="caseId" type="hidden">
+            <div class="aiad-case-grid">
+              <div class="field">
+                <label for="aiad-case-number">Numer sprawy</label>
+                <input id="aiad-case-number" name="number" placeholder="np. AIAD-2026-001">
+              </div>
+              <div class="field">
+                <label for="aiad-case-title">Nazwa / temat sprawy</label>
+                <input id="aiad-case-title" name="title" required placeholder="Krótki tytuł sprawy">
+              </div>
+              <div class="field">
+                <label for="aiad-subject-type">Osoba, której dotyczy</label>
+                <select id="aiad-subject-type" name="subjectType">
+                  <option value="Funkcjonariusz">Funkcjonariusz</option>
+                  <option value="Obywatel">Obywatel</option>
+                  <option value="Inne">Inne</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="aiad-subject">Imię i nazwisko / osoba</label>
+                <input id="aiad-subject" name="subject" list="officer-directory" autocomplete="off" required placeholder="Wyszukaj lub wpisz nazwisko">
+              </div>
+              <div class="field">
+                <label for="aiad-subject-badge">Numer odznaki (jeśli dotyczy)</label>
+                <input id="aiad-subject-badge" name="subjectBadge" inputmode="numeric" placeholder="np. 901">
+              </div>
+              <div class="field">
+                <label for="aiad-lead">Prowadzący funkcjonariusz</label>
+                <input id="aiad-lead" name="lead" list="officer-directory" autocomplete="off" required placeholder="Wyszukaj funkcjonariusza">
+              </div>
+              <div class="field">
+                <label for="aiad-status">Status</label>
+                <select id="aiad-status" name="status">
+                  <option value="Nowa">Nowa</option>
+                  <option value="W toku">W toku</option>
+                  <option value="Oczekuje">Oczekuje</option>
+                  <option value="Zamknięta">Zamknięta</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="aiad-opened">Data wszczęcia</label>
+                <input id="aiad-opened" name="openedAt" type="date" required>
+              </div>
+              <div class="field full">
+                <label for="aiad-reason">Powód wszczęcia / podstawa</label>
+                <textarea id="aiad-reason" name="reason" required placeholder="Skarga, zgłoszenie, audyt albo inna podstawa postępowania..."></textarea>
+              </div>
+              <div class="field full">
+                <label for="aiad-summary">Podsumowanie / ustalenia</label>
+                <textarea id="aiad-summary" name="summary" placeholder="Ustalenia, zakres sprawy i dalsze kroki..."></textarea>
+              </div>
+              <div class="field full">
+                <label for="aiad-linked-reports">Powiązane raporty / numery dokumentów</label>
+                <textarea id="aiad-linked-reports" name="linkedReports" placeholder="Wpisz numery raportów LSPD lub przeszukań, każdy w osobnej linii"></textarea>
+              </div>
+              <div class="field full">
+                <details>
+                  <summary>Dołącz zapisane raporty do akt sprawy</summary>
+                  <div id="aiad-related-document-list" class="aiad-event-list"><p class="saved-empty">Wczytywanie zapisanych raportów…</p></div>
+                </details>
+              </div>
+            </div>
+            <h3 class="section-title">Lista kontrolna dokumentacji</h3>
+            <p class="optional" style="font-size:11px;line-height:1.5">Lista pomocnicza; nie zastępuje ani nie rozstrzyga procedur i uprawnień.</p>
+            <ul class="aiad-checklist">
+              <li><label><input id="check_authority" type="checkbox" name="check_authority"> Podstawa / upoważnienie zweryfikowane</label></li>
+              <li><label><input id="check_subject_informed" type="checkbox" name="check_subject_informed"> Osobę poinformowano o czynności, jeśli wymagane</label></li>
+              <li><label><input id="check_identification" type="checkbox" name="check_identification"> Osoby i funkcjonariuszy zidentyfikowano</label></li>
+              <li><label><input id="check_evidence" type="checkbox" name="check_evidence"> Dowody opisano i zabezpieczono</label></li>
+              <li><label><input id="check_custody" type="checkbox" name="check_custody"> Odnotowano przekazanie / ciąg zabezpieczenia</label></li>
+              <li><label><input id="check_witness" type="checkbox" name="check_witness"> Świadkowie lub ich brak odnotowani</label></li>
+              <li><label><input id="check_report" type="checkbox" name="check_report"> Raport i załączniki zweryfikowane</label></li>
+              <li><label><input id="check_followup" type="checkbox" name="check_followup"> Zaplanowano dalsze czynności</label></li>
+            </ul>
+            <div class="form-actions">
+              <button class="button button-primary" type="submit" id="save-aiad-case">Zapisz sprawę</button>
+              <button class="button button-secondary" type="button" id="new-aiad-case">Nowa / wyczyść formularz</button>
+            </div>
+            <p class="toast" id="aiad-case-toast" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="card aiad-case-list-card" aria-labelledby="aiad-case-list-title">
+          <div class="card-header">
+            <h2 id="aiad-case-list-title">Sprawy AIAD</h2>
+            <p>Wybierz sprawę, aby zobaczyć historię czynności i dowody.</p>
+          </div>
+          <div class="saved-list-tools"><input id="aiad-case-search" type="search" placeholder="Szukaj po numerze, osobie lub prowadzącym…" aria-label="Szukaj spraw AIAD"></div>
+          <div class="aiad-case-list" id="aiad-case-list"><p class="saved-empty">Brak spraw AIAD.</p></div>
+        </section>
+
+        <section class="card aiad-detail-card" id="aiad-detail-card" aria-labelledby="aiad-detail-title" hidden>
+          <div class="card-header preview-toolbar">
+            <div><h2 id="aiad-detail-title">Szczegóły sprawy</h2><p id="aiad-detail-meta"></p></div>
+            <div class="utility-actions">
+              <button class="button button-secondary" type="button" id="export-aiad-case">Eksportuj sprawę .txt</button>
+              <button class="button button-secondary" type="button" id="print-aiad-case">Drukuj sprawę</button>
+            </div>
+          </div>
+          <div class="aiad-detail-grid">
+            <section class="card" aria-labelledby="aiad-timeline-title">
+              <div class="card-header"><h2 id="aiad-timeline-title">Oś czasu czynności</h2></div>
+              <form id="aiad-timeline-form">
+                <div class="field-grid">
+                  <div class="field"><label for="aiad-event-date">Data i godzina</label><input id="aiad-event-date" name="at" type="datetime-local" required></div>
+                  <div class="field"><label for="aiad-event-officer">Wykonał</label><input id="aiad-event-officer" name="officer" list="officer-directory" autocomplete="off" required></div>
+                  <div class="field full"><label for="aiad-event-action">Rodzaj czynności</label><input id="aiad-event-action" name="action" required placeholder="np. rozmowa, analiza nagrania, przesłuchanie"></div>
+                  <div class="field full"><label for="aiad-event-notes">Szczegóły</label><textarea id="aiad-event-notes" name="notes" placeholder="Opis wykonanej czynności i wynik"></textarea></div>
+                </div>
+                <button class="button button-secondary" type="submit">＋ Dodaj do osi czasu</button>
+              </form>
+              <div class="aiad-event-list" id="aiad-event-list"><p class="saved-empty">Nie dodano jeszcze czynności.</p></div>
+            </section>
+            <section class="card" aria-labelledby="aiad-evidence-title">
+              <div class="card-header"><h2 id="aiad-evidence-title">Ewidencja dowodów</h2></div>
+              <form id="aiad-evidence-form">
+                <div class="field-grid">
+                  <div class="field full"><label for="aiad-evidence-name">Dowód / identyfikator</label><input id="aiad-evidence-name" name="name" required placeholder="np. nagranie bodycam 01, przedmiot #E-01"></div>
+                  <div class="field"><label for="aiad-evidence-source">Źródło / miejsce zabezpieczenia</label><input id="aiad-evidence-source" name="source"></div>
+                  <div class="field"><label for="aiad-evidence-date">Data zabezpieczenia</label><input id="aiad-evidence-date" name="securedAt" type="datetime-local" required></div>
+                  <div class="field"><label for="aiad-evidence-by">Zabezpieczył(a)</label><input id="aiad-evidence-by" name="securedBy" list="officer-directory" autocomplete="off" required></div>
+                  <div class="field"><label for="aiad-evidence-transfer">Przekazano / komu</label><input id="aiad-evidence-transfer" name="transferredTo" placeholder="Brak / osoba lub jednostka"></div>
+                  <div class="field full"><label for="aiad-evidence-notes">Uwagi / stan / lokalizacja przechowywania</label><textarea id="aiad-evidence-notes" name="notes"></textarea></div>
+                </div>
+                <button class="button button-secondary" type="submit">＋ Zarejestruj dowód</button>
+              </form>
+              <div class="aiad-evidence-list" id="aiad-evidence-list"><p class="saved-empty">Nie zarejestrowano jeszcze dowodów.</p></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="card officer-directory-card" aria-labelledby="officer-roster-title">
+          <div class="card-header">
+            <h2 id="officer-roster-title">Kadra LSPD · katalog funkcjonariuszy</h2>
+            <p>Wyszukaj po nazwisku lub odznace. Jednostkę wyznacza zakres numeru odznaki podany przez Ciebie.</p>
+          </div>
+          <form id="officer-roster-form">
+            <input id="roster-edit-id" type="hidden">
+            <div class="officer-directory-form">
+              <div class="field"><label for="roster-badge">Odznaka</label><input id="roster-badge" type="number" min="0" required placeholder="Numer"></div>
+              <div class="field"><label for="roster-name">Imię i nazwisko</label><input id="roster-name" required placeholder="Imię i nazwisko"></div>
+              <button class="button button-primary" type="submit" id="roster-save-button">Dodaj funkcjonariusza</button>
+            </div>
+            <p class="toast" id="roster-toast" role="status" aria-live="polite"></p>
+          </form>
+          <div class="saved-list-tools"><input id="roster-search" type="search" placeholder="Szukaj po nazwisku lub numerze odznaki…" aria-label="Szukaj funkcjonariuszy"></div>
+          <div class="officer-roster-list" id="officer-roster-list"><p class="saved-empty">Wczytywanie kadry…</p></div>
+        </section>
+      </div>
+    </section>
+
     <section class="workspace" id="search-workspace" role="tabpanel" aria-labelledby="search-tab" hidden>
       <section class="page-heading">
         <div class="eyebrow">AIAD · dokumentacja służbowa</div>
@@ -795,6 +992,7 @@ Puste miejsce</textarea>
       </div>
     </section>
   </main>
+  <article id="aiad-case-document" aria-hidden="true"></article>
 
   <script>
     const form = document.querySelector("#report-form");
@@ -808,22 +1006,177 @@ Puste miejsce</textarea>
     const reportDraftKey = "lspd-intervention-draft";
     const caseDraftKey = "lspd-case-draft";
     const searchDraftKey = "lspd-search-draft";
-    const officerDirectory = [
-      "Henry Scott",
-      "Gregory Solin",
-      "Tony Wayne",
-      "Zoya Sierra",
-      "John Black"
-    ];
+    const defaultOfficerDirectory = `1|Levi Jaguar
+10|Elliana Rover
+1000|Kent Brif
+1001|Donghyun Park
+1002|Kajetan Galareta
+1006|Javier Brif
+107|Kris Morris
+108|Gregory Solin
+109|Jack Closet
+112|Kurt Cocaine
+113|Muhammad Almutahharhadi
+115|Richard Scott
+116|Jacob White
+118|Xavier Smith
+120|Kevin Turner
+121|Valeria Rover
+136|Jacob White
+137|Matthew Moor
+137|Terry Johns
+138|Santiago Dechille
+139|Michael Papito
+140|Ivy Sinclair
+141|Vivienne Walker
+141|Sergio Winatello
+142|Santiago Ramirez
+143|Ava Dechille
+143|Hayden F Staff
+144|John Wickney
+145|Bruce Walker
+146|Alex Turner
+147|Piter Fold
+148|Tony Evans
+149|Harland Ashford
+150|Abigail Joyner
+150|Yoshida Aiko
+155|Travis Mcflurry
+163|Anthony Nelson
+165|Paulo Cortez
+169|Mark Kochones
+169|Troy Stardust
+170|Mackey Sztonowski
+171|Evan Myers
+175|Tony Wood
+176|Bobby Bennett
+178|Iris Hernandez
+181|Simon Duarte
+182|Joe Szybkie Paluchy jr
+183|Lucky Luke jr
+184|Mike Clarck
+189|Max Black
+190|Jacob Evans
+196|Sergio Kadet Bullet
+199|Tulio Navarro Figueiredo
+2|Jacob Galahad
+3|Jerry Black
+3|Jolero Pistolero
+4|Martin Burn
+45|John Cagville
+5|Travis White
+5|Amy Rover
+6|Pablo Taylor
+70|Matt Dick
+70|Connor Chamberlain
+71|Chris Angel
+73|Mark Blackburn
+74|James Williams
+78|Mike Smith
+79|Jack Onfire
+80|Henry Scott
+84|Eric Waterson
+87|Tony Wayne
+87|Matteo Greco
+88|Bill Caggins
+90|Zoya Sierra
+901|Rose Hernandez
+901|Aizen Maraka
+902|Trevon Gamble
+902|Lucas Hernandez
+91|John Madox
+923|Oley Sasa
+93|Mehmed Black
+96|John Black
+999|Michael Eldridge`
+      .split(/\r?\n/)
+      .map((line, index) => {
+        const separator = line.indexOf("|");
+        const badge = Number(line.slice(0, separator));
+        return { id: `officer-${badge}-${index}`, badge, name: line.slice(separator + 1).trim() };
+      });
+    const officerRosterKey = "lspd-officer-roster";
+    let officerDirectory = [];
+    let officerDeletedIds = [];
 
     const officerOptions = document.createElement("datalist");
     officerOptions.id = "officer-directory";
-    officerDirectory.forEach(name => {
-      const option = document.createElement("option");
-      option.value = name;
-      officerOptions.append(option);
-    });
     document.body.append(officerOptions);
+
+    function officerUnit(badge) {
+      if (badge >= 900 && badge <= 999) return "AIAD";
+      if (badge > 1000) return "Inspektorat";
+      if (badge >= 0 && badge <= 6) return "High Command";
+      return "LSPD";
+    }
+
+    function readOfficerRoster() {
+      const raw = localStorage.getItem(officerRosterKey);
+      if (!raw) return defaultOfficerDirectory.map(item => ({ ...item }));
+      const saved = JSON.parse(raw);
+      const savedOfficers = Array.isArray(saved) ? saved : saved.officers;
+      officerDeletedIds = Array.isArray(saved.deletedIds) ? saved.deletedIds.filter(id => typeof id === "string") : [];
+      if (!Array.isArray(savedOfficers) || savedOfficers.some(item =>
+        !item || typeof item.id !== "string" || !Number.isInteger(Number(item.badge)) ||
+        typeof item.name !== "string" || !item.name.trim()
+      )) {
+        throw new Error("Katalog funkcjonariuszy ma nieprawidłowy format.");
+      }
+      const merged = new Map(defaultOfficerDirectory
+        .filter(item => !officerDeletedIds.includes(item.id))
+        .map(item => [item.id, { ...item }]));
+      savedOfficers.forEach(item => merged.set(item.id, { ...item, badge: Number(item.badge), name: item.name.trim() }));
+      return [...merged.values()].filter(item => !officerDeletedIds.includes(item.id));
+    }
+
+    function refreshOfficerSuggestions() {
+      officerOptions.replaceChildren();
+      const seen = new Set();
+      for (const officer of officerDirectory) {
+        const name = officer.name.trim();
+        const key = name.toLocaleLowerCase("pl-PL");
+        if (seen.has(key)) continue;
+        seen.add(key);
+        const option = document.createElement("option");
+        option.value = name;
+        option.label = `#${officer.badge} · ${officerUnit(officer.badge)}`;
+        officerOptions.append(option);
+      }
+    }
+
+    function saveOfficerRoster() {
+      localStorage.setItem(officerRosterKey, JSON.stringify({
+        officers: officerDirectory,
+        deletedIds: officerDeletedIds
+      }));
+      refreshOfficerSuggestions();
+      renderOfficerRoster();
+    }
+
+    function renderOfficerRoster() {
+      const container = document.querySelector("#officer-roster-list");
+      if (!container) return;
+      const filter = document.querySelector("#roster-search").value.trim().toLocaleLowerCase("pl-PL");
+      const matches = officerDirectory
+        .filter(officer => `${officer.badge} ${officer.name} ${officerUnit(officer.badge)}`.toLocaleLowerCase("pl-PL").includes(filter))
+        .sort((first, second) => first.badge - second.badge || first.name.localeCompare(second.name, "pl"));
+      if (!matches.length) {
+        container.innerHTML = '<p class="saved-empty">Nie znaleziono funkcjonariuszy.</p>';
+        return;
+      }
+      container.innerHTML = matches.map(officer => `
+        <article class="officer-row">
+          <div class="officer-row-main">
+            <span class="officer-unit">#${escapeHtml(String(officer.badge))}</span>
+            <span class="officer-row-name">${escapeHtml(officer.name)}</span>
+            <span class="officer-unit">${escapeHtml(officerUnit(officer.badge))}</span>
+          </div>
+          <div class="aiad-entry-actions">
+            <button class="button button-secondary" type="button" data-edit-officer="${escapeHtml(officer.id)}">Edytuj</button>
+            <button class="button button-quiet" type="button" data-delete-officer="${escapeHtml(officer.id)}" aria-label="Usuń funkcjonariusza ${escapeHtml(officer.name)}">Usuń</button>
+          </div>
+        </article>`).join("");
+    }
 
     function escapeHtml(value) {
       return value.replace(/[&<>"']/g, character => ({
@@ -2362,6 +2715,537 @@ Puste miejsce</textarea>
       }
     });
 
+    const aiadCasesKey = "lspd-aiad-cases";
+    const aiadCaseForm = document.querySelector("#aiad-case-form");
+    const aiadTimelineForm = document.querySelector("#aiad-timeline-form");
+    const aiadEvidenceForm = document.querySelector("#aiad-evidence-form");
+    const aiadCaseList = document.querySelector("#aiad-case-list");
+    const aiadCaseDetail = document.querySelector("#aiad-detail-card");
+    const aiadCaseToast = document.querySelector("#aiad-case-toast");
+    const aiadChecklistFields = [
+      "check_authority",
+      "check_subject_informed",
+      "check_identification",
+      "check_evidence",
+      "check_custody",
+      "check_witness",
+      "check_report",
+      "check_followup"
+    ];
+    let selectedAiadCaseId = "";
+    let aiadCaseDirty = false;
+
+    function readAiadCases() {
+      const raw = localStorage.getItem(aiadCasesKey);
+      if (!raw) return [];
+      const cases = JSON.parse(raw);
+      if (!Array.isArray(cases) || cases.some(item => !item || typeof item.id !== "string" || typeof item.title !== "string")) {
+        throw new Error("Rejestr spraw AIAD ma nieprawidłowy format.");
+      }
+      return cases;
+    }
+
+    function writeAiadCases(cases) {
+      localStorage.setItem(aiadCasesKey, JSON.stringify(cases));
+    }
+
+    function aiadFormValues(target) {
+      return Object.fromEntries(new FormData(target).entries());
+    }
+
+    function selectedAiadDocuments() {
+      return [...document.querySelectorAll("#aiad-related-document-list input[data-related-document]:checked")]
+        .map(input => {
+          const [kind, id] = input.dataset.relatedDocument.split(":", 2);
+          return { kind, id, label: input.dataset.documentLabel };
+        });
+    }
+
+    async function renderAiadRelatedDocuments(selected = []) {
+      const container = document.querySelector("#aiad-related-document-list");
+      try {
+        const reports = readSavedReports().map(item => ({
+          kind: "intervention",
+          id: item.id,
+          label: `Raport ${item.reportNumber || "interwencji"} · ${item.detained || "osoba niepodana"}`
+        }));
+        const searches = await searchDatabaseRequest("readonly", "getAll");
+        const searchEntries = searches.map(item => ({
+          kind: "search",
+          id: item.id,
+          label: `Przeszukanie · ${item.subject || "osoba niepodana"}${item.subjectType ? ` (${item.subjectType.toLocaleLowerCase("pl-PL")})` : ""}`
+        }));
+        const entries = [...reports, ...searchEntries];
+        if (!entries.length) {
+          container.innerHTML = '<p class="saved-empty">Nie ma jeszcze zapisanych raportów do dołączenia. Możesz wpisać numery ręcznie w polu powyżej.</p>';
+          return;
+        }
+        const selectedKeys = new Set(selected.map(item => `${item.kind}:${item.id}`));
+        container.innerHTML = entries.map(item => {
+          const key = `${item.kind}:${item.id}`;
+          return `<label class="related-document-option"><input type="checkbox" data-related-document="${escapeHtml(key)}" data-document-label="${escapeHtml(item.label)}" ${selectedKeys.has(key) ? "checked" : ""}>${escapeHtml(item.label)}</label>`;
+        }).join("");
+      } catch (error) {
+        container.innerHTML = '<p class="saved-empty">Nie udało się wczytać zapisanych raportów. Możesz wpisać ich numery ręcznie.</p>';
+        console.error("Nie udało się wczytać raportów powiązanych ze sprawą AIAD:", error);
+      }
+    }
+
+    function aiadCaseFromForm(existing = {}) {
+      const values = aiadFormValues(aiadCaseForm);
+      const checklist = Object.fromEntries(aiadChecklistFields.map(field => [
+        field.replace("check_", ""),
+        aiadCaseForm.elements[field].checked
+      ]));
+      const now = new Date().toISOString();
+      return {
+        ...existing,
+        id: selectedAiadCaseId || `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        number: values.number.trim() || existing.number || `AIAD-${new Date().getFullYear()}-${String(Date.now()).slice(-5)}`,
+        title: values.title.trim(),
+        subjectType: values.subjectType || "Funkcjonariusz",
+        subject: values.subject.trim(),
+        subjectBadge: values.subjectBadge.trim(),
+        lead: values.lead.trim(),
+        status: values.status || "Nowa",
+        openedAt: values.openedAt,
+        reason: values.reason.trim(),
+        summary: values.summary.trim(),
+        linkedReports: values.linkedReports.trim(),
+        relatedDocuments: selectedAiadDocuments(),
+        checklist,
+        timeline: existing.timeline ?? [],
+        evidence: existing.evidence ?? [],
+        createdAt: existing.createdAt || now,
+        updatedAt: now,
+        confidentiality: "POUFNE · DANE SŁUŻBOWE"
+      };
+    }
+
+    function renderAiadCaseList() {
+      try {
+        const cases = readAiadCases().sort((first, second) =>
+          String(second.updatedAt || second.createdAt).localeCompare(String(first.updatedAt || first.createdAt))
+        );
+        const filter = document.querySelector("#aiad-case-search").value.trim().toLocaleLowerCase("pl-PL");
+        const matches = cases.filter(item =>
+          [item.number, item.title, item.subject, item.subjectBadge, item.lead, item.status, item.reason]
+            .some(value => String(value ?? "").toLocaleLowerCase("pl-PL").includes(filter))
+        );
+        if (!matches.length) {
+          aiadCaseList.innerHTML = `<p class="saved-empty">${cases.length ? "Brak spraw pasujących do wyszukiwania." : "Brak spraw AIAD."}</p>`;
+          return;
+        }
+        aiadCaseList.innerHTML = matches.map(item => `
+          <article class="aiad-case-item" aria-current="${item.id === selectedAiadCaseId}">
+            <div>
+              <h3>${escapeHtml(item.number)} · ${escapeHtml(item.title)}</h3>
+              <p>${escapeHtml(item.subjectType)}: ${escapeHtml(item.subject)}${item.subjectBadge ? ` · #${escapeHtml(item.subjectBadge)}` : ""}<br>Prowadzi: ${escapeHtml(item.lead)} · ${escapeHtml(item.openedAt || "")}</p>
+            </div>
+            <div class="aiad-case-actions">
+              <span class="aiad-status">${escapeHtml(item.status)}</span>
+              <button class="button button-secondary" type="button" data-open-aiad-case="${escapeHtml(item.id)}">Otwórz</button>
+              <button class="button button-quiet" type="button" data-delete-aiad-case="${escapeHtml(item.id)}">Usuń</button>
+            </div>
+          </article>`).join("");
+      } catch (error) {
+        aiadCaseList.innerHTML = '<p class="saved-empty">Nie udało się odczytać rejestru AIAD.</p>';
+        aiadCaseToast.textContent = "Błąd odczytu rejestru. Nie zapisuj nowych spraw przed odzyskaniem kopii.";
+        console.error("Nie udało się odczytać spraw AIAD:", error);
+      }
+    }
+
+    function renderAiadTimeline(item) {
+      const container = document.querySelector("#aiad-event-list");
+      const entries = [...(item.timeline ?? [])].sort((first, second) => String(first.at).localeCompare(String(second.at)));
+      if (!entries.length) {
+        container.innerHTML = '<p class="saved-empty">Nie dodano jeszcze czynności.</p>';
+        return;
+      }
+      container.innerHTML = entries.map(entry => `
+        <article class="aiad-entry">
+          <div><h3>${escapeHtml(entry.action)}</h3><p>${escapeHtml(entry.at ? new Date(entry.at).toLocaleString("pl-PL") : "")} · ${escapeHtml(entry.officer)}${entry.notes ? `<br>${escapeHtml(entry.notes)}` : ""}</p></div>
+          <div class="aiad-entry-actions"><button class="button button-quiet" type="button" data-delete-event="${escapeHtml(entry.id)}">Usuń</button></div>
+        </article>`).join("");
+    }
+
+    function renderAiadEvidence(item) {
+      const container = document.querySelector("#aiad-evidence-list");
+      const entries = [...(item.evidence ?? [])].sort((first, second) => String(first.securedAt).localeCompare(String(second.securedAt)));
+      if (!entries.length) {
+        container.innerHTML = '<p class="saved-empty">Nie zarejestrowano jeszcze dowodów.</p>';
+        return;
+      }
+      container.innerHTML = entries.map(entry => `
+        <article class="aiad-entry">
+          <div><h3>${escapeHtml(entry.name)}</h3><p>Zabezpieczono: ${escapeHtml(entry.securedAt ? new Date(entry.securedAt).toLocaleString("pl-PL") : "")} · ${escapeHtml(entry.securedBy)}${entry.source ? `<br>Źródło / miejsce: ${escapeHtml(entry.source)}` : ""}${entry.transferredTo ? `<br>Przekazano: ${escapeHtml(entry.transferredTo)}` : ""}${entry.notes ? `<br>Uwagi: ${escapeHtml(entry.notes)}` : ""}</p></div>
+          <div class="aiad-entry-actions"><button class="button button-quiet" type="button" data-delete-evidence="${escapeHtml(entry.id)}">Usuń</button></div>
+        </article>`).join("");
+    }
+
+    function populateAiadCaseForm(item) {
+      selectedAiadCaseId = item.id;
+      aiadCaseForm.elements.caseId.value = item.id;
+      for (const field of ["number", "title", "subjectType", "subject", "subjectBadge", "lead", "status", "openedAt", "reason", "summary", "linkedReports"]) {
+        aiadCaseForm.elements[field].value = item[field] ?? "";
+      }
+      for (const field of aiadChecklistFields) {
+        aiadCaseForm.elements[field].checked = Boolean(item.checklist?.[field.replace("check_", "")]);
+      }
+      renderAiadRelatedDocuments(item.relatedDocuments ?? []);
+      document.querySelector("#aiad-detail-title").textContent = `${item.number} · ${item.title}`;
+      document.querySelector("#aiad-detail-meta").textContent = `${item.subjectType}: ${item.subject}${item.subjectBadge ? ` · odznaka #${item.subjectBadge}` : ""} · prowadzi ${item.lead} · status: ${item.status}`;
+      renderAiadTimeline(item);
+      renderAiadEvidence(item);
+      aiadCaseDetail.hidden = false;
+      aiadCaseDirty = false;
+      renderAiadCaseList();
+    }
+
+    function selectedAiadCase() {
+      if (!selectedAiadCaseId) return null;
+      return readAiadCases().find(item => item.id === selectedAiadCaseId) ?? null;
+    }
+
+    function saveCurrentAiadCase() {
+      const cases = readAiadCases();
+      const existing = cases.find(item => item.id === selectedAiadCaseId) ?? {};
+      const saved = aiadCaseFromForm(existing);
+      const index = cases.findIndex(item => item.id === saved.id);
+      if (index === -1) cases.unshift(saved);
+      else cases[index] = saved;
+      writeAiadCases(cases);
+      populateAiadCaseForm(saved);
+      aiadCaseToast.textContent = index === -1 ? "Sprawę dodano do lokalnego rejestru AIAD." : "Zapisano zmiany sprawy AIAD.";
+    }
+
+    function clearAiadCaseForm() {
+      selectedAiadCaseId = "";
+      aiadCaseDirty = false;
+      aiadCaseForm.reset();
+      aiadCaseForm.elements.caseId.value = "";
+      aiadCaseForm.elements.openedAt.value = new Date().toISOString().slice(0, 10);
+      aiadCaseForm.elements.subjectType.value = "Funkcjonariusz";
+      aiadCaseDetail.hidden = true;
+      document.querySelector("#aiad-related-document-list").querySelectorAll("input").forEach(input => { input.checked = false; });
+      aiadCaseToast.textContent = "";
+      renderAiadCaseList();
+    }
+
+    function aiadChecklistText(checklist = {}) {
+      const labels = {
+        authority: "Podstawa / upoważnienie zweryfikowane",
+        subject_informed: "Osobę poinformowano o czynności, jeśli wymagane",
+        identification: "Osoby i funkcjonariuszy zidentyfikowano",
+        evidence: "Dowody opisano i zabezpieczono",
+        custody: "Przekazanie / ciąg zabezpieczenia odnotowany",
+        witness: "Świadkowie lub ich brak odnotowani",
+        report: "Raport i załączniki zweryfikowane",
+        followup: "Zaplanowano dalsze czynności"
+      };
+      return Object.entries(labels).map(([key, label]) => `- [${checklist[key] ? "x" : " "}] ${label}`).join("\n");
+    }
+
+    function aiadCasePlainText(item, linkedReports = []) {
+      const timeline = [...(item.timeline ?? [])]
+        .sort((first, second) => String(first.at).localeCompare(String(second.at)))
+        .map(entry => `${new Date(entry.at).toLocaleString("pl-PL")} · ${entry.action} · ${entry.officer}${entry.notes ? `\n${entry.notes}` : ""}`)
+        .join("\n\n") || "Brak odnotowanych czynności.";
+      const evidence = [...(item.evidence ?? [])]
+        .sort((first, second) => String(first.securedAt).localeCompare(String(second.securedAt)))
+        .map(entry => `${entry.name}\nZabezpieczono: ${new Date(entry.securedAt).toLocaleString("pl-PL")} · ${entry.securedBy}${entry.source ? `\nŹródło / miejsce: ${entry.source}` : ""}${entry.transferredTo ? `\nPrzekazano: ${entry.transferredTo}` : ""}${entry.notes ? `\nUwagi: ${entry.notes}` : ""}`)
+        .join("\n\n") || "Brak zarejestrowanych dowodów.";
+      return [
+        "POUFNE · DANE SŁUŻBOWE",
+        "REJESTR SPRAWY AIAD",
+        `${item.number} · ${item.title}`,
+        `Status: ${item.status}`,
+        `Data wszczęcia: ${item.openedAt}`,
+        `Osoba: ${item.subjectType} · ${item.subject}${item.subjectBadge ? ` · odznaka #${item.subjectBadge}` : ""}`,
+        `Prowadzący: ${item.lead}`,
+        "",
+        "POWÓD WSZCZĘCIA / PODSTAWA",
+        item.reason || "Nie podano.",
+        "",
+        "PODSUMOWANIE / USTALENIA",
+        item.summary || "Nie podano.",
+        "",
+        "POWIĄZANE NUMERY DOKUMENTÓW",
+        item.linkedReports || "Nie podano.",
+        "",
+        "DOŁĄCZONE RAPORTY",
+        linkedReports.length ? linkedReports.map(entry => `${entry.title}\n${entry.text}`).join("\n\n---\n\n") : "Brak dołączonych zapisanych raportów.",
+        "",
+        "LISTA KONTROLNA DOKUMENTACJI",
+        aiadChecklistText(item.checklist),
+        "",
+        "OŚ CZASU CZYNNOŚCI",
+        timeline,
+        "",
+        "EWIDENCJA DOWODÓW",
+        evidence,
+        "",
+        "Uwaga: lista kontrolna ma charakter pomocniczy i nie zastępuje procedur ani upoważnień."
+      ].join("\n");
+    }
+
+    async function collectAiadLinkedReports(item) {
+      const selected = item.relatedDocuments ?? [];
+      const savedReports = readSavedReports();
+      const savedSearches = await searchDatabaseRequest("readonly", "getAll");
+      return selected.map(reference => {
+        if (reference.kind === "intervention") {
+          const report = savedReports.find(candidate => candidate.id === reference.id);
+          if (!report) return null;
+          const fields = [
+            ["Numer raportu", report.reportNumber],
+            ["Data i godzina", report.reportDate ? new Date(report.reportDate).toLocaleString("pl-PL") : ""],
+            ["Funkcjonariusz", report.officer],
+            ["Osoba zatrzymana", report.detained],
+            ["Okoliczności działania", report.circumstances],
+            ["Podjęte działania", report.actions],
+            ["Współpraca zatrzymanego", report.cooperation],
+            ["Adwokat", report.lawyerPresent === "Tak" ? `Tak${report.lawyer ? ` — ${report.lawyer}` : ""}` : report.lawyerPresent],
+            ["Dodatkowe informacje", report.notes]
+          ];
+          return {
+            title: reference.label || `Raport ${report.reportNumber || "interwencji"}`,
+            text: ["RAPORT Z INTERWENCJI — LSPD", ...fields.filter(([, value]) => value).map(([label, value]) => `${label}:\n${value}`)].join("\n\n")
+          };
+        }
+        const report = savedSearches.find(candidate => candidate.id === reference.id);
+        if (!report) return null;
+        const fields = [
+          ["Funkcjonariusz przeszukujący", report.officer],
+          ["Przeszukiwana osoba", report.subjectType ? `${report.subject} (${report.subjectType.toLocaleLowerCase("pl-PL")})` : report.subject],
+          ["Data i godzina", report.date ? new Date(report.date).toLocaleString("pl-PL") : ""],
+          ["Miejsce", report.location],
+          ["Powód i przebieg przeszukania", report.reason],
+          ["Znalezione przedmioty", report.items],
+          ["Załączone zrzuty ekranu", (report.images ?? []).map(image => image.name).join(", ")]
+        ];
+        return {
+          title: reference.label || `Przeszukanie · ${report.subject}`,
+          text: ["RAPORT Z PRZESZUKANIA — AIAD", ...fields.filter(([, value]) => value).map(([label, value]) => `${label}:\n${value}`)].join("\n\n")
+        };
+      }).filter(Boolean);
+    }
+
+    async function createAiadCaseDocument(item) {
+      return aiadCasePlainText(item, await collectAiadLinkedReports(item));
+    }
+
+    async function printAiadCase(item) {
+      const text = await createAiadCaseDocument(item);
+      const documentContainer = document.querySelector("#aiad-case-document");
+      const sections = text.split("\n\n");
+      documentContainer.innerHTML = sections.map((section, index) => index < 3
+        ? `<h1>${escapeHtml(section).replace(/\n/g, "<br>")}</h1>`
+        : `<section><h2>${escapeHtml(section.split("\n")[0])}</h2><p>${escapeHtml(section.split("\n").slice(1).join("\n"))}</p></section>`
+      ).join("");
+      document.body.classList.add("printing-aiad-case");
+      window.addEventListener("afterprint", () => document.body.classList.remove("printing-aiad-case"), { once: true });
+      window.print();
+    }
+
+    aiadCaseForm.addEventListener("input", () => { aiadCaseDirty = true; });
+    aiadCaseForm.addEventListener("change", () => { aiadCaseDirty = true; });
+    aiadCaseForm.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!aiadCaseForm.reportValidity()) return;
+      try {
+        saveCurrentAiadCase();
+      } catch (error) {
+        aiadCaseToast.textContent = `Nie udało się zapisać sprawy: ${error.message}`;
+        console.error("Nie udało się zapisać sprawy AIAD:", error);
+      }
+    });
+
+    document.querySelector("#new-aiad-case").addEventListener("click", () => {
+      if (aiadCaseDirty && !window.confirm("Odrzucić niezapisane zmiany i rozpocząć nową sprawę?")) return;
+      clearAiadCaseForm();
+    });
+
+    document.querySelector("#aiad-case-search").addEventListener("input", renderAiadCaseList);
+    aiadCaseList.addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      try {
+        if (button.dataset.openAiadCase) {
+          if (aiadCaseDirty && !window.confirm("Odrzucić niezapisane zmiany bieżącej sprawy?")) return;
+          const selected = readAiadCases().find(item => item.id === button.dataset.openAiadCase);
+          if (!selected) throw new Error("Nie znaleziono wybranej sprawy AIAD.");
+          populateAiadCaseForm(selected);
+          document.querySelector("#aiad-detail-card").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+        if (button.dataset.deleteAiadCase) {
+          if (!window.confirm("Usunąć sprawę AIAD wraz z osią czasu i ewidencją dowodów?")) return;
+          writeAiadCases(readAiadCases().filter(item => item.id !== button.dataset.deleteAiadCase));
+          if (selectedAiadCaseId === button.dataset.deleteAiadCase) clearAiadCaseForm();
+          else renderAiadCaseList();
+          aiadCaseToast.textContent = "Usunięto sprawę z lokalnego rejestru AIAD.";
+        }
+      } catch (error) {
+        aiadCaseToast.textContent = `Nie udało się wykonać operacji: ${error.message}`;
+        console.error("Nie udało się zmienić sprawy AIAD:", error);
+      }
+    });
+
+    function updateSelectedAiadCase(change) {
+      const cases = readAiadCases();
+      const index = cases.findIndex(item => item.id === selectedAiadCaseId);
+      if (index === -1) throw new Error("Najpierw zapisz lub otwórz sprawę AIAD.");
+      cases[index] = { ...cases[index], ...change, updatedAt: new Date().toISOString() };
+      writeAiadCases(cases);
+      populateAiadCaseForm(cases[index]);
+    }
+
+    aiadTimelineForm.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!aiadTimelineForm.reportValidity()) return;
+      try {
+        const values = aiadFormValues(aiadTimelineForm);
+        const item = selectedAiadCase();
+        if (!item) throw new Error("Najpierw zapisz lub otwórz sprawę AIAD.");
+        updateSelectedAiadCase({
+          timeline: [...(item.timeline ?? []), {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+            at: values.at,
+            officer: values.officer.trim(),
+            action: values.action.trim(),
+            notes: values.notes.trim()
+          }]
+        });
+        aiadTimelineForm.reset();
+        aiadTimelineForm.elements.at.value = new Date().toISOString().slice(0, 16);
+        aiadCaseToast.textContent = "Dodano czynność do osi czasu.";
+      } catch (error) {
+        aiadCaseToast.textContent = `Nie udało się dodać czynności: ${error.message}`;
+        console.error("Nie udało się zapisać czynności AIAD:", error);
+      }
+    });
+
+    aiadEvidenceForm.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!aiadEvidenceForm.reportValidity()) return;
+      try {
+        const values = aiadFormValues(aiadEvidenceForm);
+        const item = selectedAiadCase();
+        if (!item) throw new Error("Najpierw zapisz lub otwórz sprawę AIAD.");
+        updateSelectedAiadCase({
+          evidence: [...(item.evidence ?? []), {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+            name: values.name.trim(),
+            source: values.source.trim(),
+            securedAt: values.securedAt,
+            securedBy: values.securedBy.trim(),
+            transferredTo: values.transferredTo.trim(),
+            notes: values.notes.trim()
+          }]
+        });
+        aiadEvidenceForm.reset();
+        aiadEvidenceForm.elements.securedAt.value = new Date().toISOString().slice(0, 16);
+        aiadCaseToast.textContent = "Dodano dowód do ewidencji sprawy.";
+      } catch (error) {
+        aiadCaseToast.textContent = `Nie udało się zarejestrować dowodu: ${error.message}`;
+        console.error("Nie udało się zapisać dowodu AIAD:", error);
+      }
+    });
+
+    aiadCaseDetail.addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      try {
+        const item = selectedAiadCase();
+        if (!item) throw new Error("Nie znaleziono otwartej sprawy AIAD.");
+        if (button.dataset.deleteEvent) {
+          if (!window.confirm("Usunąć tę czynność z osi czasu?")) return;
+          updateSelectedAiadCase({ timeline: item.timeline.filter(entry => entry.id !== button.dataset.deleteEvent) });
+        } else if (button.dataset.deleteEvidence) {
+          if (!window.confirm("Usunąć ten wpis z ewidencji dowodów?")) return;
+          updateSelectedAiadCase({ evidence: item.evidence.filter(entry => entry.id !== button.dataset.deleteEvidence) });
+        } else if (button.id === "export-aiad-case") {
+          createAiadCaseDocument(item).then(text => {
+            downloadTextFile(`${item.number.replace(/[^\w.-]+/g, "_")}.txt`, text);
+            aiadCaseToast.textContent = "Pobrano komplet akt sprawy AIAD.";
+          }).catch(error => {
+            aiadCaseToast.textContent = `Nie udało się wyeksportować akt: ${error.message}`;
+            console.error("Nie udało się wyeksportować akt AIAD:", error);
+          });
+        } else if (button.id === "print-aiad-case") {
+          printAiadCase(item).catch(error => {
+            aiadCaseToast.textContent = `Nie udało się przygotować wydruku: ${error.message}`;
+            console.error("Nie udało się wydrukować akt AIAD:", error);
+          });
+        }
+      } catch (error) {
+        aiadCaseToast.textContent = `Nie udało się wykonać operacji: ${error.message}`;
+        console.error("Nie udało się zmienić szczegółów sprawy AIAD:", error);
+      }
+    });
+
+    function initializeRoster() {
+      try {
+        officerDirectory = readOfficerRoster();
+        refreshOfficerSuggestions();
+        renderOfficerRoster();
+      } catch (error) {
+        document.querySelector("#roster-toast").textContent = `Nie udało się wczytać katalogu: ${error.message}`;
+        console.error("Nie udało się wczytać katalogu funkcjonariuszy:", error);
+      }
+    }
+
+    document.querySelector("#roster-search").addEventListener("input", renderOfficerRoster);
+    document.querySelector("#officer-roster-form").addEventListener("submit", event => {
+      event.preventDefault();
+      const formElement = event.currentTarget;
+      if (!formElement.reportValidity()) return;
+      const id = document.querySelector("#roster-edit-id").value;
+      const badge = Number(document.querySelector("#roster-badge").value);
+      const name = document.querySelector("#roster-name").value.trim();
+      if (!Number.isSafeInteger(badge) || badge < 0 || !name) return;
+      const index = officerDirectory.findIndex(officer => officer.id === id);
+      if (index < 0) officerDirectory.push({ id: `custom-${Date.now()}-${Math.random().toString(36).slice(2)}`, badge, name });
+      else officerDirectory[index] = { ...officerDirectory[index], badge, name };
+      officerDeletedIds = officerDeletedIds.filter(deletedId => deletedId !== id);
+      try {
+        saveOfficerRoster();
+        formElement.reset();
+        document.querySelector("#roster-edit-id").value = "";
+        document.querySelector("#roster-save-button").textContent = "Dodaj funkcjonariusza";
+        document.querySelector("#roster-toast").textContent = index < 0 ? "Dodano funkcjonariusza do katalogu." : "Zapisano zmiany w katalogu.";
+      } catch (error) {
+        document.querySelector("#roster-toast").textContent = `Nie udało się zapisać katalogu: ${error.message}`;
+        console.error("Nie udało się zapisać katalogu funkcjonariuszy:", error);
+      }
+    });
+
+    document.querySelector("#officer-roster-list").addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      const officer = officerDirectory.find(item => item.id === (button.dataset.editOfficer || button.dataset.deleteOfficer));
+      if (!officer) return;
+      if (button.dataset.editOfficer) {
+        document.querySelector("#roster-edit-id").value = officer.id;
+        document.querySelector("#roster-badge").value = officer.badge;
+        document.querySelector("#roster-name").value = officer.name;
+        document.querySelector("#roster-save-button").textContent = "Zapisz zmiany";
+        document.querySelector("#roster-badge").focus();
+      }
+      if (button.dataset.deleteOfficer) {
+        if (!window.confirm(`Usunąć ${officer.name} (#${officer.badge}) z katalogu?`)) return;
+        officerDirectory = officerDirectory.filter(item => item.id !== officer.id);
+        if (officer.id.startsWith("officer-")) officerDeletedIds.push(officer.id);
+        try {
+          saveOfficerRoster();
+          document.querySelector("#roster-toast").textContent = "Usunięto funkcjonariusza z katalogu.";
+        } catch (error) {
+          document.querySelector("#roster-toast").textContent = `Nie udało się zapisać katalogu: ${error.message}`;
+          console.error("Nie udało się usunąć funkcjonariusza:", error);
+        }
+      }
+    });
+
     document.querySelectorAll(".workspace-tab").forEach(tab => {
       tab.addEventListener("click", () => {
         stopDictation();
@@ -2374,6 +3258,10 @@ Puste miejsce</textarea>
           workspace.classList.toggle("active-workspace", active);
         });
         if (tab.id === "search-tab") renderSavedSearches();
+        if (tab.id === "aiad-tab") {
+          renderAiadCaseList();
+          renderAiadRelatedDocuments(selectedAiadCase()?.relatedDocuments ?? []);
+        }
       });
     });
 
@@ -2457,6 +3345,13 @@ Puste miejsce</textarea>
     }
 
     async function initializeConvenienceFeatures() {
+      initializeRoster();
+      aiadCaseForm.elements.openedAt.value = new Date().toISOString().slice(0, 10);
+      document.querySelector("#aiad-event-date").value = new Date().toISOString().slice(0, 16);
+      document.querySelector("#aiad-evidence-date").value = new Date().toISOString().slice(0, 16);
+      renderAiadCaseList();
+      await renderAiadRelatedDocuments();
+
       const reportDraft = JSON.parse(localStorage.getItem(reportDraftKey) || "null");
       if (isMeaningfulDraft({ fields: reportDraft }) &&
           window.confirm("Znaleziono niezapisany szkic raportu interwencji. Przywrócić go?")) {
@@ -2510,11 +3405,13 @@ Puste miejsce</textarea>
       })));
       return {
         format: "lspd-report-backup",
-        version: 1,
+        version: 2,
         createdAt: new Date().toISOString(),
         interventionReports: readSavedReports(),
         caseDescriptions: readSavedCases(),
-        searchReports: serializedSearches
+        searchReports: serializedSearches,
+        aiadCases: readAiadCases(),
+        officers: readOfficerRoster()
       };
     }
 
@@ -2560,7 +3457,7 @@ Puste miejsce</textarea>
       if (!file) return;
       try {
         const backup = JSON.parse(await file.text());
-        if (backup.format !== "lspd-report-backup" || backup.version !== 1) {
+        if (backup.format !== "lspd-report-backup" || ![1, 2].includes(backup.version)) {
           throw new Error("Ten plik nie jest obsługiwaną kopią zapasową LSPD.");
         }
         const importedAt = new Date().toISOString();
@@ -2588,16 +3485,45 @@ Puste miejsce</textarea>
               createdAt: item.createdAt || importedAt
             };
           });
-        if (!window.confirm(`Import połączy dane z kopii z bieżącymi zapisami. W pliku: ${reportsToImport.length} raportów, ${casesToImport.length} spraw i ${searchesToImport.length} przeszukań. Kontynuować?`)) return;
+        const aiadCasesToImport = backup.version >= 2
+          ? assertBackupArray(backup.aiadCases ?? [], "aiadCases").map(item => ({
+            ...item,
+            id: typeof item.id === "string" && item.id ? item.id : makeImportId("aiad"),
+            timeline: Array.isArray(item.timeline) ? item.timeline : [],
+            evidence: Array.isArray(item.evidence) ? item.evidence : [],
+            relatedDocuments: Array.isArray(item.relatedDocuments) ? item.relatedDocuments : [],
+            createdAt: item.createdAt || importedAt,
+            updatedAt: item.updatedAt || importedAt
+          }))
+          : [];
+        const officersToImport = backup.version >= 2
+          ? assertBackupArray(backup.officers ?? [], "officers").map((item, index) => {
+            if (!Number.isSafeInteger(Number(item.badge)) || typeof item.name !== "string" || !item.name.trim()) {
+              throw new Error("Kopia zawiera nieprawidłowe dane funkcjonariusza.");
+            }
+            return {
+              id: typeof item.id === "string" && item.id ? item.id : makeImportId(`officer-${index}`),
+              badge: Number(item.badge),
+              name: item.name.trim()
+            };
+          })
+          : [];
+        if (!window.confirm(`Import połączy dane z kopii z bieżącymi zapisami. W pliku: ${reportsToImport.length} raportów, ${casesToImport.length} opisów spraw, ${searchesToImport.length} przeszukań, ${aiadCasesToImport.length} spraw AIAD i ${officersToImport.length} funkcjonariuszy. Kontynuować?`)) return;
 
         const reports = readSavedReports();
         const savedCases = readSavedCases();
+        const aiadCases = readAiadCases();
+        const officers = readOfficerRoster();
         const existingSearches = await searchDatabaseRequest("readonly", "getAll");
         const reportIds = new Set(reports.map(item => item.id));
         const caseIds = new Set(savedCases.map(item => item.id));
+        const aiadCaseIds = new Set(aiadCases.map(item => item.id));
         const searchIds = new Set(existingSearches.map(item => item.id));
+        const officerIds = new Set(officers.map(item => item.id));
         const newReports = reportsToImport.filter(item => !reportIds.has(item.id));
         const newCases = casesToImport.filter(item => !caseIds.has(item.id));
+        const newAiadCases = aiadCasesToImport.filter(item => !aiadCaseIds.has(item.id));
+        const newOfficers = officersToImport.filter(item => !officerIds.has(item.id));
         const newSearches = searchesToImport.filter(item => !searchIds.has(item.id)).map(report => ({
           ...report,
           images: (report.images ?? []).map(image => ({
@@ -2610,11 +3536,16 @@ Puste miejsce</textarea>
 
         localStorage.setItem(reportHistoryKey, JSON.stringify([...newReports, ...reports]));
         localStorage.setItem(savedCasesKey, JSON.stringify([...newCases, ...savedCases]));
+        writeAiadCases([...newAiadCases, ...aiadCases]);
+        officerDirectory = [...officerDirectory, ...newOfficers];
+        saveOfficerRoster();
         for (const report of newSearches) await searchDatabaseRequest("readwrite", "put", report);
         renderSavedReports();
         renderSavedCases();
+        renderAiadCaseList();
         await renderSavedSearches();
-        draftStatus.textContent = `Import zakończony. Dodano: ${pluralizeCount(newReports.length, ["raport", "raporty", "raportów"])}, ${pluralizeCount(newCases.length, ["sprawę", "sprawy", "spraw"]) } i ${pluralizeCount(newSearches.length, ["przeszukanie", "przeszukania", "przeszukań"])}.`;
+        renderAiadCaseList();
+        draftStatus.textContent = `Import zakończony. Dodano: ${pluralizeCount(newReports.length, ["raport", "raporty", "raportów"])}, ${pluralizeCount(newCases.length, ["opis sprawy", "opisy spraw", "opisów spraw"])}, ${pluralizeCount(newSearches.length, ["przeszukanie", "przeszukania", "przeszukań"])}, ${pluralizeCount(newAiadCases.length, ["sprawę AIAD", "sprawy AIAD", "spraw AIAD"])} i ${pluralizeCount(newOfficers.length, ["funkcjonariusza", "funkcjonariuszy", "funkcjonariuszy"])}.`;
         appStatus.textContent = "Import zakończony";
       } catch (error) {
         draftStatus.textContent = `Nie udało się zaimportować kopii: ${error.message}`;
