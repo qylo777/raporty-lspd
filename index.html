@@ -414,7 +414,7 @@
             </div>
             <div class="field">
               <label for="officer">Funkcjonariusz sporządzający</label>
-              <input id="officer" name="officer" placeholder="Imię i nazwisko / numer odznaki">
+              <input id="officer" name="officer" list="officer-directory" autocomplete="off" placeholder="Wpisz, aby wyszukać funkcjonariusza">
             </div>
             <div class="field">
               <label for="detained">Osoba zatrzymana</label>
@@ -635,7 +635,7 @@
             <div class="field-grid">
               <div class="field">
                 <label for="search-officer">Funkcjonariusz przeszukujący</label>
-                <input id="search-officer" name="searchOfficer" required placeholder="Imię i nazwisko / numer odznaki">
+                <input id="search-officer" name="searchOfficer" list="officer-directory" autocomplete="off" required placeholder="Wpisz, aby wyszukać funkcjonariusza">
               </div>
               <div class="field">
                 <label for="search-subject">Przeszukiwana osoba</label>
@@ -799,6 +799,22 @@ Puste miejsce</textarea>
     const reportDraftKey = "lspd-intervention-draft";
     const caseDraftKey = "lspd-case-draft";
     const searchDraftKey = "lspd-search-draft";
+    const officerDirectory = [
+      "Henry Scott",
+      "Gregory Solin",
+      "Tony Wayne",
+      "Zoya Sierra",
+      "John Black"
+    ];
+
+    const officerOptions = document.createElement("datalist");
+    officerOptions.id = "officer-directory";
+    officerDirectory.forEach(name => {
+      const option = document.createElement("option");
+      option.value = name;
+      officerOptions.append(option);
+    });
+    document.body.append(officerOptions);
 
     function escapeHtml(value) {
       return value.replace(/[&<>"']/g, character => ({
